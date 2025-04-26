@@ -30,27 +30,6 @@ DEFAULT_MODEL_REGISTRY = {
 }
 
 
-class DeprecatedCaptioningModel:
-    def __init__(self, device: str = "cuda", pretext: str = "a photography of"):
-        self._model_tag = "Salesforce/blip-image-captioning-base"
-        self._device = device
-        self._pretext = pretext
-
-        self.model = BlipForConditionalGeneration.from_pretrained(self._model_tag, device_map="auto")
-        self.processor = BlipProcessor.from_pretrained(self._model_tag)
-        self.model.to(device)
-
-    def __call__(self, image_frame) -> str:
-        inputs = self.processor(image_frame, self._pretext, return_tensors="pt").to(self._device)
-        out = self.model.generate(**inputs)
-        caption = self.processor.decode(out[0], skip_special_tokens=True)
-        del inputs, out
-        return caption
-
-    def __repr__(self):
-        return f"CaptioningModel(model_tag={self._model_tag}, device={self.device})"
-
-
 class VisualCaptioningModel:
     def __init__(self, device: str = "cuda", model_tag: CaptionModelType = None):
         self._model_tag = model_tag if model_tag else CaptionModelType.PLM_1B
