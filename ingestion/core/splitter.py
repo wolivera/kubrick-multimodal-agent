@@ -65,6 +65,6 @@ def split_video_to_chunks_subprocess(
 
 
 if __name__ == "__main__":
-    video_path = "/home/razvantalexandru/Documents/Projects/NeuralBits/multimodal-agents-course/.cache/por_vs_esp_5min/2018_portugal_vs_spain_T0h0m_0h5m.mp4"
-    cache_path = "/home/razvantalexandru/Documents/Projects/NeuralBits/multimodal-agents-course/.cache/"
+    video_path = "data/long_video/2018_portugal_vs_spain_T0h0m_0h5m.mp4"
+    cache_path = ".cache/"
     split_video_to_chunks_subprocess(video_path=Path(video_path), chunk_duration=60, cache_path=cache_path)
