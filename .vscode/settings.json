@@ -12,5 +12,5 @@
         "notebook.source.fixAll": true,
         "notebook.source.organizeImports": true
     },
-    "python.defaultInterpreterPath": "mcp-server/.venv/bin/python"
+    "python.defaultInterpreterPath": "agent-api/.venv/bin/python"
 }
