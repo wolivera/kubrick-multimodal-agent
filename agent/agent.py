@@ -1,14 +1,12 @@
 from typing import Optional
 
 import pixeltable as pxt
-
 from sport_assistant.core.agent.base import BaseAgent
-
 from sport_assistant.core.agent.openai.utils import create_messages
 
 try:
     from pixeltable.functions.openai import chat_completions
-except ImportError: 
+except ImportError:
     raise ImportError("openai not found; run `pip install openai`")
 
 
@@ -95,9 +93,7 @@ class Agent(BaseAgent):
 
         # Get OpenAI's API response
         self.agent.add_computed_column(
-            response=chat_completions(
-                messages=self.agent.prompt, model=self.model, **self.chat_kwargs
-            ),
+            response=chat_completions(messages=self.agent.prompt, model=self.model, **self.chat_kwargs),
             if_exists="ignore",
         )
 
@@ -106,4 +102,3 @@ class Agent(BaseAgent):
             agent_response=self.agent.response.choices[0].message.content,
             if_exists="ignore",
         )
-

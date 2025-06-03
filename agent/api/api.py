@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-
 from sport_assistant.core.agent.openai import Agent
 from sport_assistant.core.prompts import SPORT_ASSISTANT_SYSTEM_PROMPT
 
