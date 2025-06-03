@@ -1,4 +1,6 @@
+import base64
 import uuid
+from io import BytesIO
 from typing import Optional
 
 import av
@@ -61,3 +63,36 @@ def create_video_from_dataframe(df: pd.DataFrame, output_path: str, fps: int = 1
     finally:
         if container:
             container.close()
+
+
+def encode_image(image: str | Image.Image) -> str:
+    """Encode an image to base64 string.
+
+    Args:
+        image (Union[str, Image.Image]): Either a file path to an image or a PIL Image object
+
+    Returns:
+        str: Base64 encoded string representation of the image
+
+    Raises:
+        FileNotFoundError: If the image path does not exist
+        IOError: If there are issues reading or processing the image
+    """
+    try:
+        if isinstance(image, str):
+            with open(image, "rb") as image_file:
+                image_str = image_file.read()
+        else:
+            if not image.format:
+                image_format = "JPEG"
+            else:
+                image_format = image.format
+
+            buffered = BytesIO()
+            image.save(buffered, format=image_format)
+            image_str = buffered.getvalue()
+
+        return base64.b64encode(image_str).decode("utf-8")
+
+    except (FileNotFoundError, IOError) as e:
+        raise IOError(f"Failed to process image: {str(e)}")

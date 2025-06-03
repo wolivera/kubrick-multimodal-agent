@@ -1,17 +1,19 @@
 import base64
 import io
+from typing import List, Literal, Union
 
 import pixeltable as pxt
 from PIL import Image
 from pydantic import BaseModel, Field, field_validator
 
 
+#####################################
+# Table Registry Models
+#####################################
 class CachedTableMetadata(BaseModel):
     video_cache: str = Field(..., description="Path to the video cache")
     video_table: str = Field(..., description="Root video table")
-    frames_view: str = Field(
-        ..., description="Video frames which were split using a FPS and frame iterator"
-    )
+    frames_view: str = Field(..., description="Video frames which were split using a FPS and frame iterator")
     audio_chunks_view: str = Field(
         ...,
         description="After chunking audio, getting transcript and splitting it into sentences",
@@ -21,9 +23,7 @@ class CachedTableMetadata(BaseModel):
 class CachedTable:
     video_cache: str = Field(..., description="Path to the video cache")
     video_table: pxt.Table = Field(..., description="Root video table")
-    frames_view: pxt.Table = Field(
-        ..., description="Video frames which were split using a FPS and frame iterator"
-    )
+    frames_view: pxt.Table = Field(..., description="Video frames which were split using a FPS and frame iterator")
     audio_chunks_view: pxt.Table = Field(
         ...,
         description="After chunking audio, getting transcript and splitting it into sentences",
@@ -43,9 +43,7 @@ class CachedTable:
 
     @classmethod
     def from_metadata(cls, metadata: dict | CachedTableMetadata) -> "CachedTable":
-        metadata = (
-            CachedTableMetadata(**metadata) if isinstance(metadata, dict) else metadata
-        )
+        metadata = CachedTableMetadata(**metadata) if isinstance(metadata, dict) else metadata
         return cls(
             video_cache=metadata.video_cache,
             video_table=pxt.get_table(metadata.video_table),
@@ -62,17 +60,44 @@ class CachedTable:
         }
 
 
-class Base64ToPILImageModel(BaseModel):
-    image: str
+######################################
+# Image Processing Models
+######################################
+class Base64Image(BaseModel):
+    image: str = Field(description="Base64 encoded image string")
 
     @field_validator("image", mode="before")
-    def decode_image(cls, v):
+    def encode_image(cls, v):
         if isinstance(v, Image.Image):
             buffered = io.BytesIO()
-            v.save(buffered, format="PNG")
+            v.save(buffered, format="JPEG")
             return base64.b64encode(buffered.getvalue()).decode("utf-8")
         return v
 
-    def get_image(self) -> Image.Image:
-        img_bytes = base64.b64decode(self.image)
-        return Image.open(io.BytesIO(img_bytes))
+    def to_pil(self) -> Image.Image:
+        return Image.open(io.BytesIO(base64.b64decode(self.image)))
+
+
+class TextContent(BaseModel):
+    type: Literal["text"] = "text"
+    text: str
+
+
+class ImageUrlContent(BaseModel):
+    type: Literal["image_url"] = "image_url"
+    base64_image: str = Field(..., serialization_alias="image_url")
+
+    @field_validator("base64_image", mode="before")
+    def serialize_image(cls, v):
+        if isinstance(v, str):
+            return f"data:image/jpeg;base64,{v}"
+        raise TypeError("image_url must be a dict with 'url' or a PIL Image")
+
+
+class UserContent(BaseModel):
+    role: Literal["user"] = "user"
+    content: List[Union[TextContent, ImageUrlContent]]
+
+    @classmethod
+    def from_pair(cls, base64_image: str, prompt: str):
+        return cls(content=[TextContent(text=prompt), ImageUrlContent(base64_image=base64_image)])

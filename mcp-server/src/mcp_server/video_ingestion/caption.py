@@ -1,44 +1,12 @@
-import base64
-from io import BytesIO
-
 from groq import Groq
 from loguru import logger
+from models import UserContent
 from PIL import Image
+from tools import encode_image
 
-from mcp_server.config import settings
+from mcp_server.config import get_settings
 
-
-def encode_image(image: str | Image.Image) -> str:
-    """Encode an image to base64 string.
-
-    Args:
-        image (Union[str, Image.Image]): Either a file path to an image or a PIL Image object
-
-    Returns:
-        str: Base64 encoded string representation of the image
-
-    Raises:
-        FileNotFoundError: If the image path does not exist
-        IOError: If there are issues reading or processing the image
-    """
-    try:
-        if isinstance(image, str):
-            with open(image, "rb") as image_file:
-                image_str = image_file.read()
-        else:
-            if not image.format:
-                image_format = "JPEG"
-            else:
-                image_format = image.format
-
-            buffered = BytesIO()
-            image.save(buffered, format=image_format)
-            image_str = buffered.getvalue()
-
-        return base64.b64encode(image_str).decode("utf-8")
-
-    except (FileNotFoundError, IOError) as e:
-        raise IOError(f"Failed to process image: {str(e)}")
+settings = get_settings()
 
 
 class VisualCaptioningModel:
@@ -58,9 +26,7 @@ class VisualCaptioningModel:
         self.model_name = model_name
         self.client = Groq(api_key=settings.GROQ_API_KEY)
 
-    def caption(
-        self, image: Image.Image | str, prompt: str, verbose: bool = False
-    ) -> str:
+    def caption(self, image: Image.Image | str, prompt: str, verbose: bool = False) -> str:
         """Generate a caption for the given image using the specified prompt.
 
         Args:
@@ -74,22 +40,12 @@ class VisualCaptioningModel:
             If image is provided as a string, it will be loaded and converted to RGB format.
         """
         base64_image = encode_image(image)
-
+        message = UserContent.from_pair(
+            image=base64_image,
+            prompt=prompt,
+        )
         chat_completion = self.client.chat.completions.create(
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": prompt},
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": f"data:image/jpeg;base64,{base64_image}"
-                            },
-                        },
-                    ],
-                }
-            ],
+            messages=[message.model_dump(by_alias=True)],
             model=self.model_name,
         )
 

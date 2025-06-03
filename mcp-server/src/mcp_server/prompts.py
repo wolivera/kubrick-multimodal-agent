@@ -1,1 +1,25 @@
-# TODO: Add prompts here
+import opik
+from loguru import logger
+
+opik.configure()
+client = opik.Opik()
+
+logger = logger.bind(name="Prompts")
+
+
+def system_prompt() -> str:
+    try:
+        prompt = client.get_prompt(name="prompt-system")
+    except Exception:
+        logger.warning("Nada, not working. Check opik creds playa")
+        prompt = "You are a helpful assistant. You need to help the user solve some sport related problems. Your input is {{input}}"
+    return prompt
+
+
+def struct_output_prompt() -> str:
+    try:
+        prompt = client.get_prompt(name="prompt-struct-output")
+    except Exception:
+        logger.warning("Nada, not working. Check opik creds playa")
+        prompt = "You are a helpful assistant. You need to help the user solve some sport related problems. Your output is {{output}}"
+    return prompt

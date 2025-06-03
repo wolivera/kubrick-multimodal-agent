@@ -2,13 +2,13 @@ from typing import List
 
 from loguru import logger
 
-from mcp_server.config import settings
+import mcp_server.video_ingestion.registry as registry
+from mcp_server.config import get_settings
 from mcp_server.video_ingestion.models import Base64ToPILImageModel, CachedTable
-from mcp_server.video_ingestion.video_processor import (
-    VideoProcessor,
-    get_registry,
-    get_table,
-)
+from mcp_server.video_ingestion.video_processor import VideoProcessor
+
+settings = get_settings()
+logger = logger.bind(name="MCPVideoTools")
 
 
 def process_video(video_path: str) -> str:
@@ -46,7 +46,7 @@ def get_clip_by_speech_sim(
     Returns:
         The path to the video clip.
     """
-    video_index: CachedTable = get_table(video_name)
+    video_index: CachedTable = registry.get_table(video_name)
     if not video_index:
         raise ValueError(f"Video index {video_name} not found in registry.")
 
@@ -92,7 +92,7 @@ def get_clip_by_image_sim(
     Returns:
         A string listing the paths to the video clips.
     """
-    video_index: CachedTable = get_table(video_name)
+    video_index: CachedTable = registry.get_table(video_name)
     if not video_index:
         raise ValueError(f"Video index {video_name} not found in registry.")
 
@@ -108,10 +108,8 @@ def get_clip_by_image_sim(
     if len(top_k_entries) > 0:
         for entry in top_k_entries:
             video_clip_info_dict = {
-                "start_time": entry["pos_msec"] / 1000.0
-                - settings.DELTA_SECONDS_FRAME_INTERVAL,
-                "end_time": entry["pos_msec"] / 1000.0
-                + settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "start_time": entry["pos_msec"] / 1000.0 - settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "end_time": entry["pos_msec"] / 1000.0 + settings.DELTA_SECONDS_FRAME_INTERVAL,
                 "similarity": float(entry["similarity"]),
             }
             video_clips.append(video_clip_info_dict)
@@ -133,7 +131,7 @@ def get_clip_by_caption_sim(
     Returns:
         A string listing the paths to the video clips.
     """
-    video_index: CachedTable = get_table(video_name)
+    video_index: CachedTable = registry.get_table(video_name)
     if not video_index:
         raise ValueError(f"Video index {video_name} not found in registry.")
 
@@ -149,23 +147,9 @@ def get_clip_by_caption_sim(
     if len(top_k_entries) > 0:
         for entry in top_k_entries:
             video_clip_info_dict = {
-                "start_time": entry["pos_msec"] / 1000.0
-                - settings.DELTA_SECONDS_FRAME_INTERVAL,
-                "end_time": entry["pos_msec"] / 1000.0
-                + settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "start_time": entry["pos_msec"] / 1000.0 - settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "end_time": entry["pos_msec"] / 1000.0 + settings.DELTA_SECONDS_FRAME_INTERVAL,
                 "similarity": float(entry["similarity"]),
             }
             video_clips.append(video_clip_info_dict)
     return video_clips
-
-
-def list_tables() -> str:
-    """List all video indexes currently available.
-
-    Returns:
-        A string listing the current video indexes.
-    """
-    keys = list(get_registry().keys())
-    if not keys:
-        return "No video indexes exist."
-    return f"Current video indexes: {', '.join(keys)}"

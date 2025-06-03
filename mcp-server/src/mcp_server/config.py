@@ -1,10 +1,10 @@
+from functools import lru_cache
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env", extra="ignore", env_file_encoding="utf-8"
-    )
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", env_file_encoding="utf-8")
     # --- GROQ Configuration ---
     GROQ_API_KEY: str
     GROQ_VLM_MODEL: str = "meta-llama/llama-4-scout-17b-16e-instruct"
@@ -16,14 +16,25 @@ class Settings(BaseSettings):
 
     # --- Speech Similarity Search Configuration ---
     SPEECH_SIMILARITY_SEARCH_TOP_K: int = 3
+    SPEECH_SIMILARITY_EMBD_MODEL: str = "openai/whisper-large-v3"
 
     # --- Image Similarity Search Configuration ---
     IMAGE_SIMILARITY_SEARCH_TOP_K: int = 3
+    IMAGE_SIMILARITY_EMBD_MODEL: str = "clip-vit-base-patch32"
     DELTA_SECONDS_FRAME_INTERVAL: float = 3.0
 
     # --- Caption Similarity Search Configuration ---
     CAPTION_SIMILARITY_SEARCH_TOP_K: int = 3
+    CAPTION_SIMILARITY_EMBD_MODEL: str = "clip-vit-base-patch32"
     DELTA_SECONDS_FRAME_INTERVAL: float = 3.0
 
 
-settings = Settings()
+@lru_cache(maxsize=1)
+def get_settings() -> Settings:
+    """
+    Get the application settings.
+
+    Returns:
+        Settings: The application settings.
+    """
+    return Settings()
