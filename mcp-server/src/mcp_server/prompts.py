@@ -31,9 +31,3 @@ def struct_output_prompt() -> str:
         logger.warning("Nada, not working. Check opik creds playa")
         prompt = "You are a helpful assistant. You need to help the user solve some sport related problems. Your output is {{output}}"
     return prompt
-
-
-if __name__ == "__main__":
-    # For testing purposes
-    print("System Prompt:", system_prompt())
-    print("Structured Output Prompt:", struct_output_prompt())

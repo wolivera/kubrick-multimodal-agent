@@ -1,10 +1,10 @@
 from groq import Groq
 from loguru import logger
-from models import UserContent
 from PIL import Image
-from tools import encode_image
 
 from mcp_server.config import get_settings
+from mcp_server.video_ingestion.models import UserContent
+from mcp_server.video_ingestion.tools import encode_image
 
 settings = get_settings()
 
@@ -26,9 +26,7 @@ class VisualCaptioningModel:
         self.model_name = model_name
         self.client = Groq(api_key=settings.GROQ_API_KEY)
 
-    def caption(
-        self, image: Image.Image | str, prompt: str, verbose: bool = False
-    ) -> str:
+    def caption(self, image: Image.Image | str, prompt: str, verbose: bool = False) -> str:
         """Generate a caption for the given image using the specified prompt.
 
         Args:

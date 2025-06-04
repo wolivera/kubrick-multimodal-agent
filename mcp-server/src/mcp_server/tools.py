@@ -4,7 +4,7 @@ from loguru import logger
 
 import mcp_server.video_ingestion.registry as registry
 from mcp_server.config import get_settings
-from mcp_server.video_ingestion.models import Base64ToPILImageModel, CachedTable
+from mcp_server.video_ingestion.models import Base64Image, CachedTable
 from mcp_server.video_ingestion.video_processor import VideoProcessor
 
 settings = get_settings()
@@ -79,7 +79,7 @@ def get_clip_by_speech_sim(
 
 def get_clip_by_image_sim(
     video_name: str,
-    image_base64: Base64ToPILImageModel,
+    image_base64: Base64Image,
     top_k: int = settings.IMAGE_SIMILARITY_SEARCH_TOP_K,
 ) -> List[dict]:
     """Get a video clip based on the user query using image similarity.
@@ -96,7 +96,7 @@ def get_clip_by_image_sim(
     if not video_index:
         raise ValueError(f"Video index {video_name} not found in registry.")
 
-    sims = video_index.frames_view.image.similarity(image_base64.get_image())
+    sims = video_index.frames_view.image.similarity(image_base64.to_pil())
     results = video_index.frames_view.select(
         video_index.frames_view.pos_msec,
         video_index.frames_view.frame,
@@ -108,10 +108,8 @@ def get_clip_by_image_sim(
     if len(top_k_entries) > 0:
         for entry in top_k_entries:
             video_clip_info_dict = {
-                "start_time": entry["pos_msec"] / 1000.0
-                - settings.DELTA_SECONDS_FRAME_INTERVAL,
-                "end_time": entry["pos_msec"] / 1000.0
-                + settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "start_time": entry["pos_msec"] / 1000.0 - settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "end_time": entry["pos_msec"] / 1000.0 + settings.DELTA_SECONDS_FRAME_INTERVAL,
                 "similarity": float(entry["similarity"]),
             }
             video_clips.append(video_clip_info_dict)
@@ -149,10 +147,8 @@ def get_clip_by_caption_sim(
     if len(top_k_entries) > 0:
         for entry in top_k_entries:
             video_clip_info_dict = {
-                "start_time": entry["pos_msec"] / 1000.0
-                - settings.DELTA_SECONDS_FRAME_INTERVAL,
-                "end_time": entry["pos_msec"] / 1000.0
-                + settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "start_time": entry["pos_msec"] / 1000.0 - settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "end_time": entry["pos_msec"] / 1000.0 + settings.DELTA_SECONDS_FRAME_INTERVAL,
                 "similarity": float(entry["similarity"]),
             }
             video_clips.append(video_clip_info_dict)

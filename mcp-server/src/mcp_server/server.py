@@ -1,13 +1,8 @@
 from fastmcp import FastMCP
 
-from .prompts import struct_output_prompt, system_prompt
-from .resources import list_table_info, list_tables
-from .tools import (
-    get_clip_by_caption_sim,
-    get_clip_by_image_sim,
-    get_clip_by_speech_sim,
-    process_video,
-)
+from mcp_server.prompts import struct_output_prompt, system_prompt
+from mcp_server.resources import list_tables
+from mcp_server.tools import get_clip_by_caption_sim, get_clip_by_image_sim, get_clip_by_speech_sim, process_video
 
 
 def add_mcp_tools(mcp: FastMCP):
@@ -43,17 +38,10 @@ def add_mcp_tools(mcp: FastMCP):
 def add_mcp_resources(mcp: FastMCP):
     mcp.add_resource_fn(
         fn=list_tables,
-        uri="/registry/list_tables",
+        uri="file:///app/.records/records.json",
         name="list_tables",
         description="List all video indexes currently available.",
         tags={"resource", "all"},
-    )
-
-    mcp.add_resource(
-        name="list_table_info",
-        fn=list_table_info,
-        description="List information about a specific video index.",
-        tags={"resource", "info"},
     )
 
 
@@ -78,3 +66,6 @@ mcp = FastMCP("VideoProcessor")
 add_mcp_prompts(mcp)
 add_mcp_tools(mcp)
 add_mcp_resources(mcp)
+
+if __name__ == "__main__":
+    mcp.run(host="0.0.0.0", port=8000, transport="streamable-http")
