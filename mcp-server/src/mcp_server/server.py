@@ -2,9 +2,12 @@ from fastmcp import FastMCP
 
 from .prompts import struct_output_prompt, system_prompt
 from .resources import list_table_info, list_tables
-from .tools import get_clip_by_caption_sim, get_clip_by_image_sim, get_clip_by_speech_sim, list_tables, process_video
-
-mcp = FastMCP("VideoProcessor")
+from .tools import (
+    get_clip_by_caption_sim,
+    get_clip_by_image_sim,
+    get_clip_by_speech_sim,
+    process_video,
+)
 
 
 def add_mcp_tools(mcp: FastMCP):
@@ -58,7 +61,7 @@ def add_mcp_prompts(mcp: FastMCP):
     mcp.add_prompt(
         fn=struct_output_prompt,
         name="struct_output_prompt",
-        description="Prompt to structure the output of the agent's response.",
+        description="Latest version of the response prompt from Opik.",
         tags={"prompt", "structured.output"},
     )
 
@@ -69,6 +72,8 @@ def add_mcp_prompts(mcp: FastMCP):
         tags={"prompt", "system"},
     )
 
+
+mcp = FastMCP("VideoProcessor")
 
 add_mcp_prompts(mcp)
 add_mcp_tools(mcp)

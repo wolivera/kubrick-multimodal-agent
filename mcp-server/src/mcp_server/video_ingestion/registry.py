@@ -34,7 +34,9 @@ def get_registry() -> Dict[str, CachedTableMetadata]:
             ]
             if registry_files:
                 latest_file = max(registry_files)
-                latest_registry = Path(cc.DEFAULT_CACHED_TABLES_REGISTRY_DIR) / latest_file
+                latest_registry = (
+                    Path(cc.DEFAULT_CACHED_TABLES_REGISTRY_DIR) / latest_file
+                )
                 with open(str(latest_registry), "r") as f:
                     VIDEO_INDEXES_REGISTRY = json.load(f)
                     for key, value in VIDEO_INDEXES_REGISTRY.items():

@@ -13,7 +13,9 @@ from pydantic import BaseModel, Field, field_validator
 class CachedTableMetadata(BaseModel):
     video_cache: str = Field(..., description="Path to the video cache")
     video_table: str = Field(..., description="Root video table")
-    frames_view: str = Field(..., description="Video frames which were split using a FPS and frame iterator")
+    frames_view: str = Field(
+        ..., description="Video frames which were split using a FPS and frame iterator"
+    )
     audio_chunks_view: str = Field(
         ...,
         description="After chunking audio, getting transcript and splitting it into sentences",
@@ -23,7 +25,9 @@ class CachedTableMetadata(BaseModel):
 class CachedTable:
     video_cache: str = Field(..., description="Path to the video cache")
     video_table: pxt.Table = Field(..., description="Root video table")
-    frames_view: pxt.Table = Field(..., description="Video frames which were split using a FPS and frame iterator")
+    frames_view: pxt.Table = Field(
+        ..., description="Video frames which were split using a FPS and frame iterator"
+    )
     audio_chunks_view: pxt.Table = Field(
         ...,
         description="After chunking audio, getting transcript and splitting it into sentences",
@@ -43,7 +47,9 @@ class CachedTable:
 
     @classmethod
     def from_metadata(cls, metadata: dict | CachedTableMetadata) -> "CachedTable":
-        metadata = CachedTableMetadata(**metadata) if isinstance(metadata, dict) else metadata
+        metadata = (
+            CachedTableMetadata(**metadata) if isinstance(metadata, dict) else metadata
+        )
         return cls(
             video_cache=metadata.video_cache,
             video_table=pxt.get_table(metadata.video_table),
@@ -100,4 +106,9 @@ class UserContent(BaseModel):
 
     @classmethod
     def from_pair(cls, base64_image: str, prompt: str):
-        return cls(content=[TextContent(text=prompt), ImageUrlContent(base64_image=base64_image)])
+        return cls(
+            content=[
+                TextContent(text=prompt),
+                ImageUrlContent(base64_image=base64_image),
+            ]
+        )

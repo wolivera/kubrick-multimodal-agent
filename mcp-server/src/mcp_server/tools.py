@@ -108,8 +108,10 @@ def get_clip_by_image_sim(
     if len(top_k_entries) > 0:
         for entry in top_k_entries:
             video_clip_info_dict = {
-                "start_time": entry["pos_msec"] / 1000.0 - settings.DELTA_SECONDS_FRAME_INTERVAL,
-                "end_time": entry["pos_msec"] / 1000.0 + settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "start_time": entry["pos_msec"] / 1000.0
+                - settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "end_time": entry["pos_msec"] / 1000.0
+                + settings.DELTA_SECONDS_FRAME_INTERVAL,
                 "similarity": float(entry["similarity"]),
             }
             video_clips.append(video_clip_info_dict)
@@ -147,8 +149,10 @@ def get_clip_by_caption_sim(
     if len(top_k_entries) > 0:
         for entry in top_k_entries:
             video_clip_info_dict = {
-                "start_time": entry["pos_msec"] / 1000.0 - settings.DELTA_SECONDS_FRAME_INTERVAL,
-                "end_time": entry["pos_msec"] / 1000.0 + settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "start_time": entry["pos_msec"] / 1000.0
+                - settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "end_time": entry["pos_msec"] / 1000.0
+                + settings.DELTA_SECONDS_FRAME_INTERVAL,
                 "similarity": float(entry["similarity"]),
             }
             video_clips.append(video_clip_info_dict)

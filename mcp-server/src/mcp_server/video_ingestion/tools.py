@@ -10,7 +10,9 @@ from moviepy import VideoFileClip
 from PIL import Image
 
 
-def extract_video_clip(video_path: str, start_time: float, end_time: float, output_path: str = None) -> VideoFileClip:
+def extract_video_clip(
+    video_path: str, start_time: float, end_time: float, output_path: str = None
+) -> VideoFileClip:
     if start_time >= end_time:
         raise ValueError("start_time must be less than end_time")
 
@@ -53,7 +55,9 @@ def create_video_from_dataframe(df: pd.DataFrame, output_path: str, fps: int = 1
         for _, row in df.iterrows():
             frame: Image.Image = row["frame"]
             if frame:
-                av_frame = av.VideoFrame.from_ndarray(np.array(frame.convert("RGB")), format="rgb24")
+                av_frame = av.VideoFrame.from_ndarray(
+                    np.array(frame.convert("RGB")), format="rgb24"
+                )
                 for packet in stream.encode(av_frame):
                     container.mux(packet)
 
