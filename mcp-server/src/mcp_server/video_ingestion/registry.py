@@ -5,9 +5,10 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict
 
-import constants as cc
 from loguru import logger
-from models import CachedTable, CachedTableMetadata
+
+import mcp_server.video_ingestion.constants as cc
+from mcp_server.video_ingestion.models import CachedTable, CachedTableMetadata
 
 logger = logger.bind(name="TableRegistry")
 
@@ -34,9 +35,7 @@ def get_registry() -> Dict[str, CachedTableMetadata]:
             ]
             if registry_files:
                 latest_file = max(registry_files)
-                latest_registry = (
-                    Path(cc.DEFAULT_CACHED_TABLES_REGISTRY_DIR) / latest_file
-                )
+                latest_registry = Path(cc.DEFAULT_CACHED_TABLES_REGISTRY_DIR) / latest_file
                 with open(str(latest_registry), "r") as f:
                     VIDEO_INDEXES_REGISTRY = json.load(f)
                     for key, value in VIDEO_INDEXES_REGISTRY.items():

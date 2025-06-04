@@ -39,9 +39,7 @@ class VideoProcessor:
         self.video_mapping_idx = video_name
         exists = self._check_if_exists()
         if exists:
-            logger.info(
-                f"Video index '{self.video_mapping_idx}' already exists and is ready for use."
-            )
+            logger.info(f"Video index '{self.video_mapping_idx}' already exists and is ready for use.")
             cached_table: "CachedTable" = registry.get_table(self.video_mapping_idx)
             self.pxt_cache = cached_table.video_cache
             self.video_table = cached_table.video_table
@@ -63,9 +61,7 @@ class VideoProcessor:
                 frames_view_name=self.frames_view_name,
                 audio_view_name=self.audio_view_name,
             )
-            logger.info(
-                f"Creating new video index '{self.video_table_name}' in '{self.pxt_cache}'"
-            )
+            logger.info(f"Creating new video index '{self.video_table_name}' in '{self.pxt_cache}'")
 
     def _check_if_exists(self) -> bool:
         """
@@ -80,7 +76,7 @@ class VideoProcessor:
     def _setup_table(self):
         logger.info(f"Creating cache path {self.pxt_cache}.")
         Path(self.pxt_cache).mkdir(parents=True, exist_ok=True)
-        pxt.create_dir(self.pxt_cache, if_exists="ignore")
+        pxt.create_dir(self.pxt_cache, if_exists="replace_force")
 
         self.video_table = pxt.create_table(
             self.video_table_name,
@@ -106,9 +102,7 @@ class VideoProcessor:
         )
 
         self.audio_chunks.add_computed_column(
-            transcription=whisper.transcribe(
-                audio=self.audio_chunks.audio_chunk, model="base.en"
-            ),
+            transcription=whisper.transcribe(audio=self.audio_chunks.audio_chunk, model="base.en"),
             if_exists="ignore",
         )
         self.audio_chunks.add_computed_column(
@@ -126,9 +120,7 @@ class VideoProcessor:
         self.frames_view = pxt.create_view(
             self.frames_view_name,
             self.video_table,
-            iterator=FrameIterator.create(
-                video=self.video_table.video, fps=0.5
-            ),  # FIXME: move to config
+            iterator=FrameIterator.create(video=self.video_table.video, fps=0.5),  # FIXME: move to config
             if_exists="ignore",
         )
 
@@ -160,9 +152,7 @@ class VideoProcessor:
             video_path (str): The path to the video file.
         """
         if not self.video_table:
-            raise ValueError(
-                "Video table is not initialized. Call setup_table() first."
-            )
+            raise ValueError("Video table is not initialized. Call setup_table() first.")
 
         logger.info(f"Adding video {video_path} to table {self.video_table_name}")
         self.video_table.insert([{"video": video_path}])

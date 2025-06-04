@@ -21,7 +21,7 @@ lint-check:
 
 start-mcp-server: stop-mcp-server
 	docker build -t mcp-server . && \
-	docker run -it -p 8000:8000 --name mcp-server --env-file .env -v ./notebooks/data:/app/videos -v ./.pixeltable:/root/.pixeltable -v ./.records:/app/.records mcp-server
+	docker run -it -p 9090:9090 --name mcp-server --env-file .env -v ./notebooks/data:/app/videos -v ./.pixeltable:/root/.pixeltable -v ./.records:/app/.records mcp-server
 
 inspect-mcp-server:
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash && \
