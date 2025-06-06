@@ -28,7 +28,7 @@ if prompt := st.chat_input("What would you like to know about sports?"):
     # Send request to FastAPI endpoint
     try:
         response = requests.post(
-            "http://api:8000/chat",  # Changed from localhost to service name
+            "http://agent-api:8080/chat",  # Changed from localhost to service name
             json={"message": prompt},
             headers={"Content-Type": "application/json"},
         )

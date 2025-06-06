@@ -9,10 +9,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Set the working directory
-COPY . /app
-
 # Install application dependencies
+COPY . /app
 WORKDIR /app
 RUN uv sync --frozen --no-cache
 
