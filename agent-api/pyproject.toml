@@ -8,6 +8,7 @@ dependencies = [
     "fastapi[standard]>=0.115.12",
     "fastmcp>=2.6.0",
     "groq>=0.26.0",
+    "instructor>=1.8.3",
     "ipykernel>=6.29.5",
     "loguru>=0.7.3",
     "opik>=1.7.29",

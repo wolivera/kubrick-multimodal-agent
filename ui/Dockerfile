@@ -11,7 +11,7 @@ COPY uv.lock pyproject.toml README.md ./
 RUN uv sync --frozen --no-cache
 
 # Copy the application into the container
-COPY src/sport_assistant sport_assistant/
+COPY app.py ./
 
 # Run the FastAPI application using uvicorn
-CMD ["/app/.venv/bin/fastapi", "run", "sport_assistant/infrastructure/api.py", "--port", "8000", "--host", "0.0.0.0"]
+CMD ["/app/.venv/bin/streamlit", "run", "app.py"]

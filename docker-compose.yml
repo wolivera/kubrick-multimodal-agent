@@ -1,17 +1,39 @@
 services:
-  api:
+  mcp-server:
+    container_name: mcp-server
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./mcp-server
     ports:
       - "8000:8000"
     env_file:
-      - .env
-  ui:
+      - ./mcp-server/.env
+    networks:
+      - agent-network
+  agent-api:
+    container_name: agent-api
     build:
-      context: .
-      dockerfile: Dockerfile.chainlit
+      context: ./agent-api
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./agent-api/.env
+    networks:
+      - agent-network
+    depends_on:
+      - mcp-server
+  ui:
+    container_name: ui
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
     ports:
       - "8501:8501"
     depends_on:
-      - api
+      - agent-api
+      - mcp-server
+    networks:
+      - agent-network
+
+networks:
+  agent-network:
+    name: agent-network
