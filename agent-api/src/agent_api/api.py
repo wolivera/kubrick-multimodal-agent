@@ -66,8 +66,7 @@ def chat(request: ChatRequest):
         return ChatResponse(response=response)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
+    
 @app.post("/reset-memory")
 async def reset_memory():
     """
