@@ -3,15 +3,10 @@ FROM python:3.12-slim
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Set the working directory
-WORKDIR /app
-
 # Install application dependencies
-COPY uv.lock pyproject.toml README.md ./
+COPY . /app
+WORKDIR /app
 RUN uv sync --frozen --no-cache
 
-# Copy the application into the container
-COPY app.py ./
-
-# Run the FastAPI application using uvicorn
-CMD ["/app/.venv/bin/streamlit", "run", "app.py"]
+# Run the Chainlit CLI
+CMD ["/app/.venv/bin/chainlit", "run", "chainlit_app.py", "--port", "8501", "--host", "0.0.0.0"]

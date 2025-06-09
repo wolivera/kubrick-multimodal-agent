@@ -40,14 +40,15 @@ class GroqAgent(BaseAgent):
         tools = await self.discover_tools()
         return [transform_tool_definition(tool) for tool in tools]
 
-    def _build_chat_history(self, system_prompt: str) -> List[Dict[str, str]]:
+    def _build_chat_history(self, system_prompt: str, message: str) -> List[Dict[str, str]]:
         """Build chat history with system prompt and recent memory records."""
         return [
             {"role": "system", "content": system_prompt},
-            *[
-                {"role": record.role, "content": record.content}
-                for record in self.memory.get_latest(n=settings.AGENT_MEMORY_SIZE)
-            ],
+            # *[
+            #     {"role": record.role, "content": record.content}
+            #     for record in self.memory.get_latest(n=settings.AGENT_MEMORY_SIZE)
+            # ],
+            {"role": "user", "content": message},
         ]
 
     def _route_query(self, message: str) -> bool:
@@ -63,10 +64,10 @@ class GroqAgent(BaseAgent):
         )
         return response.tool_use
 
-    async def _run_with_tool(self, video_path: str) -> str:
+    async def _run_with_tool(self, message: str, video_path: str) -> str:
         """Execute chat completion with tool usage."""
         tool_use_system_prompt = self.tool_use_system_prompt.format(video_path=video_path)
-        chat_history = self._build_chat_history(tool_use_system_prompt)
+        chat_history = self._build_chat_history(tool_use_system_prompt, message)
 
         response = self.client.chat.completions.create(
             model=settings.GROQ_TOOL_USE_MODEL,
@@ -103,13 +104,15 @@ class GroqAgent(BaseAgent):
             )
 
         second_response = self.client.chat.completions.create(
-            model=settings.GROQ_TOOL_USE_MODEL, messages=chat_history
+            model=settings.GROQ_TOOL_USE_MODEL, 
+            messages=chat_history,
+            
         )
         return second_response.choices[0].message.content
 
-    def _run_general(self) -> str:
+    def _run_general(self, message: str) -> str:
         """Execute general chat completion without tool usage."""
-        chat_history = self._build_chat_history(self.general_system_prompt)
+        chat_history = self._build_chat_history(self.general_system_prompt, message)
 
         response = self.client.chat.completions.create(
             model=settings.GROQ_GENERAL_MODEL,
@@ -130,14 +133,14 @@ class GroqAgent(BaseAgent):
 
     async def chat(self, message: str, video_path: str) -> str:
         """Process a chat message and return the response."""
-        self._add_to_memory("user", message)
+        #self._add_to_memory("user", message)
 
         tool_use = self._route_query(message)
 
         if tool_use:
-            response = await self._run_with_tool(video_path)
+            response = await self._run_with_tool(message, video_path)
         else:
-            response = self._run_general()
+            response = self._run_general(message)
 
-        self._add_to_memory("assistant", response)
+        # self._add_to_memory("assistant", response)
         return response

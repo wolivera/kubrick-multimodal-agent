@@ -27,6 +27,9 @@ class Settings(BaseSettings):
 
     # --- MCP Configuration ---
     MCP_SERVER: str = "http://mcp-server:9090/mcp"
+    
+    # --- Disable Nest Asyncio ---
+    DISABLE_NEST_ASYNCIO: bool = True
 
 
 settings = Settings()
