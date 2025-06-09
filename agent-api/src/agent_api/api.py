@@ -21,9 +21,8 @@ app = FastAPI(
 
 agent = GroqAgent(
     name="kubrick",
-    system_prompt="You are a helpful assistant.",
-    model=settings.GROQ_MODEL,
     mcp_server=settings.MCP_SERVER,
+    active_tools=["process_video", "get_video_clip_from_image"],
 )
 
 
@@ -61,8 +60,10 @@ async def chat(request: ChatRequest):
     Returns:
         ChatResponse containing the assistant's response
     """
+    await agent.setup()
+    
     try:
-        response = await agent.chat(request.message)
+        response = await agent.chat(request.message, request.video_path)
         return ChatResponse(response=response)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

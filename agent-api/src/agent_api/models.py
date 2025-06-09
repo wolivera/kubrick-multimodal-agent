@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class ChatRequest(BaseModel):
     message: str
+    video_path: str
 
 
 class ChatResponse(BaseModel):
