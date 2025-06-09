@@ -3,7 +3,7 @@ from fastmcp.client import Client
 from loguru import logger
 
 from agent_api.config import settings
-from agent_api.core.agent import GroqAgent
+from agent_api.agent import GroqAgent
 from agent_api.models import (
     ChatRequest,
     ChatResponse,
@@ -51,7 +51,7 @@ async def process_video(request: ProcessVideoRequest):
 
 
 @app.post("/chat", response_model=ChatResponse)
-def chat(request: ChatRequest):
+async def chat(request: ChatRequest):
     """
     Chat with the AI assistant
 
@@ -62,7 +62,7 @@ def chat(request: ChatRequest):
         ChatResponse containing the assistant's response
     """
     try:
-        response = agent.chat(request.message)
+        response = await agent.chat(request.message)
         return ChatResponse(response=response)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

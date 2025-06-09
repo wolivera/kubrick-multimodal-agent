@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str
     GROQ_ROUTING_MODEL: str = "llama3-70b-8192"
     GROQ_TOOL_USE_MODEL: str = "llama-3.3-70b-versatile"
-    GROQ_GENERAL_MODEL: int = "llama3-70b-8192"
+    GROQ_GENERAL_MODEL: str = "llama3-70b-8192"
 
     # --- Comet ML & Opik Configuration ---
     COMET_API_KEY: str | None = Field(

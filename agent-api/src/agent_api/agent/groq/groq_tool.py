@@ -1,6 +1,4 @@
 from typing import Any, Dict, Optional
-
-from fastmcp.types import Tool
 from pydantic import BaseModel
 
 
@@ -35,7 +33,7 @@ class GroqTool(BaseModel):
     function: GroqFunction
 
     @classmethod
-    def from_mcp_tool(cls, tool: Tool) -> "GroqTool":
+    def from_mcp_tool(cls, tool) -> "GroqTool":
         """Create a GroqTool instance from an MCP Tool."""
         properties = {}
 
@@ -57,6 +55,6 @@ class GroqTool(BaseModel):
         return cls(function=function)
 
 
-def transform_tool_definition(tool: Tool) -> dict:
+def transform_tool_definition(tool) -> dict:
     """Transform an MCP tool into a Groq tool definition dictionary."""
     return GroqTool.from_mcp_tool(tool).model_dump()

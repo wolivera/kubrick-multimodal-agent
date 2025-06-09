@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 from fastmcp import Client
-from fastmcp.types import Tool
 from loguru import logger
 
 from agent_api.agent.memory import Memory
@@ -15,29 +14,54 @@ class BaseAgent(ABC):
     def __init__(
         self,
         name: str,
-        routing_system_prompt: str,
-        tool_use_system_prompt: str,
-        general_system_prompt: str,
-        model: str,
         mcp_server: str,
         memory: Memory = None,
+        disable_tools: list = None,
     ):
         self.name = name
-        self.routing_system_prompt = routing_system_prompt
-        self.tool_use_system_prompt = tool_use_system_prompt
-        self.general_system_prompt = general_system_prompt
-        self.model = model
         self.mcp_client = Client(mcp_server)
         self.memory = memory if memory else Memory(name)
+        self.disable_tools = disable_tools if disable_tools else []
+        
+        self.tools = None
+        self.routing_system_prompt = None
+        self.tool_use_system_prompt = None
+        self.general_system_prompt = None
+        
+    async def setup(self):
+        """Initialize async components of the agent."""
+        async with self.mcp_client as _:
+            self.tools = await self._get_tools()
+            self.routing_system_prompt = await self._get_routing_system_prompt()
+            self.tool_use_system_prompt = await self._get_tool_use_system_prompt()
+            self.general_system_prompt = await self._get_general_system_prompt()
+
+    async def _get_routing_system_prompt(self) -> str:
+        """Get the routing system prompt."""
+        logger.info("Getting routing system prompt")
+        mcp_prompt = await self.mcp_client.get_prompt("routing_system_prompt")
+        return mcp_prompt.messages[0].content.text
+    
+    async def _get_tool_use_system_prompt(self) -> str:
+        """Get the tool use system prompt."""
+        logger.info("Getting tool use system prompt")
+        mcp_prompt = await self.mcp_client.get_prompt("tool_use_system_prompt")
+        return mcp_prompt.messages[0].content.text
+    
+    async def _get_general_system_prompt(self) -> str:
+        """Get the general system prompt."""
+        logger.info("Getting general system prompt")
+        mcp_prompt = await self.mcp_client.get_prompt("general_system_prompt")
+        return mcp_prompt.messages[0].content.text
 
     def reset_memory(self):
         self.memory.reset_memory()
         
-    def filter_active_tools(self, tools: list[Tool]) -> list[Tool]:
+    def filter_active_tools(self, tools: list) -> list:
         """
         Filter the list of tools to only include the active tools.
         """
-        return [tool for tool in tools if tool.name in self.active_tools]
+        return [tool for tool in tools if tool.name not in self.disable_tools]
 
     async def discover_tools(self) -> list:
         """
@@ -73,5 +97,9 @@ class BaseAgent(ABC):
             raise
         
     @abstractmethod
-    def chat(self, message: str) -> str:
+    async def _get_tools(self) -> list:
+        raise NotImplementedError("Tools are not implemented in the base class.")
+    
+    @abstractmethod
+    async def chat(self, message: str) -> str:
         raise NotImplementedError("Chat is not implemented in the base class.")
