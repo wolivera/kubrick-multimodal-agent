@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 
 from fastmcp import Client
+from fastmcp.types import Tool
 from loguru import logger
 
-from agent_api.core.agent.memory import Memory
+from agent_api.agent.memory import Memory
 
 
 class BaseAgent(ABC):
@@ -14,19 +15,29 @@ class BaseAgent(ABC):
     def __init__(
         self,
         name: str,
-        system_prompt: str,
+        routing_system_prompt: str,
+        tool_use_system_prompt: str,
+        general_system_prompt: str,
         model: str,
         mcp_server: str,
         memory: Memory = None,
     ):
         self.name = name
-        self.system_prompt = system_prompt
+        self.routing_system_prompt = routing_system_prompt
+        self.tool_use_system_prompt = tool_use_system_prompt
+        self.general_system_prompt = general_system_prompt
         self.model = model
         self.mcp_client = Client(mcp_server)
         self.memory = memory if memory else Memory(name)
 
     def reset_memory(self):
         self.memory.reset_memory()
+        
+    def filter_active_tools(self, tools: list[Tool]) -> list[Tool]:
+        """
+        Filter the list of tools to only include the active tools.
+        """
+        return [tool for tool in tools if tool.name in self.active_tools]
 
     async def discover_tools(self) -> list:
         """
@@ -49,9 +60,10 @@ class BaseAgent(ABC):
                     logger.info("No tools were discovered from the MCP server")
                     return []
                 logger.info(f"Discovered {len(tools)} tools:")
+                tools = self.filter_active_tools(tools)
+                logger.info(f"Filtered tools to {len(tools)} active tools")
                 for tool in tools:
                     logger.info(f"- {tool.name}: {tool.description}")
-
                 return tools
         except ConnectionError as e:
             logger.error(f"Failed to connect to MCP server: {e}")
@@ -59,7 +71,7 @@ class BaseAgent(ABC):
         except Exception as e:
             logger.error(f"Tool discovery failed: {e}")
             raise
-
+        
     @abstractmethod
     def chat(self, message: str) -> str:
         raise NotImplementedError("Chat is not implemented in the base class.")

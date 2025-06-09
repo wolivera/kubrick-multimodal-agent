@@ -9,7 +9,9 @@ class Settings(BaseSettings):
 
     # --- GROQ Configuration ---
     GROQ_API_KEY: str
-    GROQ_MODEL: str = "llama3-8b-8192"
+    GROQ_ROUTING_MODEL: str = "llama3-70b-8192"
+    GROQ_TOOL_USE_MODEL: str = "llama-3.3-70b-versatile"
+    GROQ_GENERAL_MODEL: int = "llama3-70b-8192"
 
     # --- Comet ML & Opik Configuration ---
     COMET_API_KEY: str | None = Field(
@@ -24,7 +26,7 @@ class Settings(BaseSettings):
     AGENT_MEMORY_SIZE: int = 20
 
     # --- MCP Configuration ---
-    MCP_SERVER: str = "http://mcp-server:8000/mcp"
+    MCP_SERVER: str = "http://mcp-server:9090/mcp"
 
 
 settings = Settings()
