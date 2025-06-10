@@ -1,17 +1,50 @@
 services:
-  api:
+  mcp-server:
+    container_name: mcp-server
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./mcp-server
     ports:
-      - "8000:8000"
+      - "9090:9090"
     env_file:
-      - .env
-  ui:
+      - ./mcp-server/.env
+    networks:
+      - agent-network
+    volumes:
+      - ./videos:/app/videos
+  agent-api:
+    container_name: agent-api
     build:
-      context: .
-      dockerfile: Dockerfile.chainlit
+      context: ./agent-api
+    ports:
+      - "8080:8080"
+    environment:
+      - DISABLE_NEST_ASYNCIO=True
+    env_file:
+      - ./agent-api/.env
+    networks:
+      - agent-network
+    depends_on:
+      - mcp-server
+    volumes:
+      - ./videos:/app/videos
+  ui:
+    container_name: ui
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
     ports:
       - "8501:8501"
     depends_on:
-      - api
+      - agent-api
+      - mcp-server
+    networks:
+      - agent-network
+    volumes:
+      - ./videos:/app/videos
+
+networks:
+  agent-network:
+    name: agent-network
+
+volumes:
+  videos:

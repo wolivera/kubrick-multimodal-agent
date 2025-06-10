@@ -1,6 +1,6 @@
 from fastmcp import FastMCP
 
-from mcp_server.prompts import struct_output_prompt, system_prompt
+from mcp_server.prompts import routing_system_prompt, tool_use_system_prompt, general_system_prompt
 from mcp_server.resources import list_tables
 from mcp_server.tools import (
     ask_question_about_video,
@@ -52,17 +52,24 @@ def add_mcp_resources(mcp: FastMCP):
 
 def add_mcp_prompts(mcp: FastMCP):
     mcp.add_prompt(
-        fn=struct_output_prompt,
-        name="struct_output_prompt",
-        description="Latest version of the response prompt from Opik.",
-        tags={"prompt", "structured.output"},
+        fn=routing_system_prompt,
+        name="routing_system_prompt",
+        description="Latest version of the routing prompt from Opik.",
+        tags={"prompt", "routing"},
     )
 
     mcp.add_prompt(
-        fn=system_prompt,
-        name="system_prompt",
-        description="Latest version of the system prompt from Opik.",
-        tags={"prompt", "system"},
+        fn=tool_use_system_prompt,
+        name="tool_use_system_prompt",
+        description="Latest version of the tool use prompt from Opik.",
+        tags={"prompt", "tool_use"},
+    )
+
+    mcp.add_prompt(
+        fn=general_system_prompt,
+        name="general_system_prompt",
+        description="Latest version of the general prompt from Opik.",
+        tags={"prompt", "general"},
     )
 
 

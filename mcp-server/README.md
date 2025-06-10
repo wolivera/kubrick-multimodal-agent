@@ -22,4 +22,4 @@ These are the resources available:
 
 This MCP server is going to be part of a broader project (the multimodal agent course). But, of course, we recommend you to run it localy and follow the two notebooks in the `notebooks` folder.
 
-
+# Add here how to create kernel for notebook (or create a makefile command, which might be cleaner)

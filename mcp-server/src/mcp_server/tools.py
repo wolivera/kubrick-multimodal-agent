@@ -35,18 +35,18 @@ def process_video(video_path: str) -> str:
     return "Video processed successfully"
 
 
-def get_video_clip_from_user_query(video_name: str, user_query: str) -> Dict[str, str]:
+def get_video_clip_from_user_query(video_path: str, user_query: str) -> Dict[str, str]:
     """Get a video clip based on the user query using speech and caption similarity.
 
     Args:
-        video_name (str): The name of the video index.
+        video_path (str): The path to the video file.
         user_query (str): The user query to search for.
 
     Returns:
         Dict[str, str]: Dictionary containing:
             filename (str): Path to the extracted video clip.
     """
-    search_engine = VideoSearchEngine(video_name)
+    search_engine = VideoSearchEngine(video_path)
 
     speech_clips = search_engine.search_by_speech(
         user_query, settings.VIDEO_CLIP_SPEECH_SEARCH_TOP_K
@@ -61,7 +61,7 @@ def get_video_clip_from_user_query(video_name: str, user_query: str) -> Dict[str
     video_clip_info = speech_clips[0] if speech_sim > caption_sim else caption_clips[0]
 
     video_clip = extract_video_clip(
-        video_path=video_name,
+        video_path=video_path,
         start_time=video_clip_info["start_time"],
         end_time=video_clip_info["end_time"],
         output_path=f"./videos/{str(uuid4())}.mp4",
@@ -71,25 +71,25 @@ def get_video_clip_from_user_query(video_name: str, user_query: str) -> Dict[str
 
 
 def get_video_clip_from_image(
-    video_name: str, user_image: Base64Image
+    video_path: str, user_image: Base64Image
 ) -> Dict[str, str]:
     """Get a video clip based on similarity to a provided image.
 
     Args:
-        video_name (str): The name of the video index to search in.
+        video_path (str): The path to the video file.
         user_image (Base64Image): The query image encoded in base64 format.
 
     Returns:
         Dict[str, str]: Dictionary containing:
             filename (str): Path to the extracted video clip.
     """
-    search_engine = VideoSearchEngine(video_name)
+    search_engine = VideoSearchEngine(video_path)
     image_clips = search_engine.search_by_image(
         user_image, settings.VIDEO_CLIP_IMAGE_SEARCH_TOP_K
     )
 
     video_clip = extract_video_clip(
-        video_path=video_name,
+        video_path=video_path,
         start_time=image_clips[0]["start_time"],
         end_time=image_clips[0]["end_time"],
         output_path=f"./videos/{str(uuid4())}.mp4",
@@ -98,18 +98,18 @@ def get_video_clip_from_image(
     return {"filename": video_clip.filename}
 
 
-def ask_question_about_video(video_name: str, user_query: str) -> Dict[str, str]:
+def ask_question_about_video(video_path: str, user_query: str) -> Dict[str, str]:
     """Get relevant captions from the video based on the user's question.
 
     Args:
-        video_name (str): The name of the video index to search in.
+        video_path (str): The path to the video file.
         user_query (str): The question to search for relevant captions.
 
     Returns:
         Dict[str, str]: Dictionary containing:
             answer (str): Concatenated relevant captions from the video.
     """
-    search_engine = VideoSearchEngine(video_name)
+    search_engine = VideoSearchEngine(video_path)
     caption_info = search_engine.get_caption_info(
         user_query, settings.QUESTION_ANSWER_TOP_K
     )
