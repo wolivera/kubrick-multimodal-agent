@@ -3,9 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env", extra="ignore", env_file_encoding="utf-8"
-    )
+    model_config = SettingsConfigDict(env_file="agent-api/.env", extra="ignore", env_file_encoding="utf-8")
 
     # --- GROQ Configuration ---
     GROQ_API_KEY: str
@@ -14,9 +12,7 @@ class Settings(BaseSettings):
     GROQ_GENERAL_MODEL: str = "llama3-70b-8192"
 
     # --- Comet ML & Opik Configuration ---
-    COMET_API_KEY: str | None = Field(
-        default=None, description="API key for Comet ML and Opik services."
-    )
+    COMET_API_KEY: str | None = Field(default=None, description="API key for Comet ML and Opik services.")
     COMET_PROJECT: str = Field(
         default="multimodal-agent-course",
         description="Project name for Comet ML and Opik tracking.",
@@ -27,7 +23,7 @@ class Settings(BaseSettings):
 
     # --- MCP Configuration ---
     MCP_SERVER: str = "http://mcp-server:9090/mcp"
-    
+
     # --- Disable Nest Asyncio ---
     DISABLE_NEST_ASYNCIO: bool = True
 
