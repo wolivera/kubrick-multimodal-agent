@@ -76,10 +76,8 @@ class VideoSearchEngine:
 
         return [
             {
-                "start_time": entry["pos_msec"] / 1000.0
-                - settings.DELTA_SECONDS_FRAME_INTERVAL,
-                "end_time": entry["pos_msec"] / 1000.0
-                + settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "start_time": entry["pos_msec"] / 1000.0 - settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "end_time": entry["pos_msec"] / 1000.0 + settings.DELTA_SECONDS_FRAME_INTERVAL,
                 "similarity": float(entry["similarity"]),
             }
             for entry in results.limit(top_k).collect()
@@ -107,10 +105,8 @@ class VideoSearchEngine:
 
         return [
             {
-                "start_time": entry["pos_msec"] / 1000.0
-                - settings.DELTA_SECONDS_FRAME_INTERVAL,
-                "end_time": entry["pos_msec"] / 1000.0
-                + settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "start_time": entry["pos_msec"] / 1000.0 - settings.DELTA_SECONDS_FRAME_INTERVAL,
+                "end_time": entry["pos_msec"] / 1000.0 + settings.DELTA_SECONDS_FRAME_INTERVAL,
                 "similarity": float(entry["similarity"]),
             }
             for entry in results.limit(top_k).collect()
