@@ -9,8 +9,9 @@ from mcp_server.video.ingestion.tools import extract_video_clip
 from mcp_server.video.ingestion.video_processor import VideoProcessor
 from mcp_server.video.video_search_engine import VideoSearchEngine
 
-settings = get_settings()
 logger = logger.bind(name="MCPVideoTools")
+video_processor = VideoProcessor()
+settings = get_settings()
 
 
 def process_video(video_path: str) -> str:
@@ -25,14 +26,13 @@ def process_video(video_path: str) -> str:
     Raises:
         ValueError: If the video file cannot be found or processed.
     """
-    video_processor = VideoProcessor(
-        video_clip_length=settings.VIDEO_CLIP_LENGTH,
-        split_fps=settings.SPLIT_FPS,
-        audio_chunk_length=settings.AUDIO_CHUNK_LENGTH,
-    )
     video_processor.setup_table(video_name=video_path)
-    video_processor.add_video(video_path=video_path)
-    return "Video processed successfully"
+    exists = video_processor._check_if_exists()
+    if exists:
+        logger.info(f"Video index for '{video_path}' already exists and is ready for use.")
+        return False
+    is_done = video_processor.add_video(video_path=video_path)
+    return is_done
 
 
 def get_video_clip_from_user_query(video_path: str, user_query: str) -> Dict[str, str]:
@@ -48,12 +48,8 @@ def get_video_clip_from_user_query(video_path: str, user_query: str) -> Dict[str
     """
     search_engine = VideoSearchEngine(video_path)
 
-    speech_clips = search_engine.search_by_speech(
-        user_query, settings.VIDEO_CLIP_SPEECH_SEARCH_TOP_K
-    )
-    caption_clips = search_engine.search_by_caption(
-        user_query, settings.VIDEO_CLIP_CAPTION_SEARCH_TOP_K
-    )
+    speech_clips = search_engine.search_by_speech(user_query, settings.VIDEO_CLIP_SPEECH_SEARCH_TOP_K)
+    caption_clips = search_engine.search_by_caption(user_query, settings.VIDEO_CLIP_CAPTION_SEARCH_TOP_K)
 
     speech_sim = speech_clips[0]["similarity"] if speech_clips else 0
     caption_sim = caption_clips[0]["similarity"] if caption_clips else 0
@@ -70,9 +66,7 @@ def get_video_clip_from_user_query(video_path: str, user_query: str) -> Dict[str
     return {"filename": video_clip.filename}
 
 
-def get_video_clip_from_image(
-    video_path: str, user_image: Base64Image
-) -> Dict[str, str]:
+def get_video_clip_from_image(video_path: str, user_image: Base64Image) -> Dict[str, str]:
     """Get a video clip based on similarity to a provided image.
 
     Args:
@@ -84,9 +78,7 @@ def get_video_clip_from_image(
             filename (str): Path to the extracted video clip.
     """
     search_engine = VideoSearchEngine(video_path)
-    image_clips = search_engine.search_by_image(
-        user_image, settings.VIDEO_CLIP_IMAGE_SEARCH_TOP_K
-    )
+    image_clips = search_engine.search_by_image(user_image, settings.VIDEO_CLIP_IMAGE_SEARCH_TOP_K)
 
     video_clip = extract_video_clip(
         video_path=video_path,
@@ -110,9 +102,7 @@ def ask_question_about_video(video_path: str, user_query: str) -> Dict[str, str]
             answer (str): Concatenated relevant captions from the video.
     """
     search_engine = VideoSearchEngine(video_path)
-    caption_info = search_engine.get_caption_info(
-        user_query, settings.QUESTION_ANSWER_TOP_K
-    )
+    caption_info = search_engine.get_caption_info(user_query, settings.QUESTION_ANSWER_TOP_K)
 
     answer = "\n".join(entry["caption"] for entry in caption_info)
     return {"answer": answer}

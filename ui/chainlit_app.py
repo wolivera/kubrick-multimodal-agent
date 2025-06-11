@@ -1,11 +1,22 @@
+import asyncio
 import os
 import shutil
+from enum import Enum
 
 import aiohttp
 import chainlit as cl
 
-API_BASE_URL = "http://agent-api:8080"  # Adjust this based on your API location
 
+class TaskStatus(str, Enum):
+    PENDING = "pending"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    NOT_FOUND = "not_found"
+
+
+API_BASE_URL = "http://agent-api:8080"  # Adjust to your FastAPI server address
+DEFAULT_RETRY_INTERVAL_SEC = 10
 os.makedirs("videos", exist_ok=True)
 
 
@@ -21,32 +32,50 @@ async def start():
         ).send()
 
     video_file = files[0]
+    dest_path = os.path.join("videos", video_file.name)
+    shutil.move(video_file.path, dest_path)
 
-    try:
-        dest_path = os.path.join("videos", video_file.name)
-
-        shutil.move(video_file.path, dest_path)
-        
-        async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
+        try:
             async with session.post(
                 f"{API_BASE_URL}/process-video",
                 json={"video_path": dest_path},
             ) as response:
-                if response.status == 200:
-                    elements = [
-                        cl.Video(name=video_file.name, path=dest_path, display="inline"),
-                    ]
-                    await cl.Message(
-                        content="You video has been correctly uploaded!!",
-                        elements=elements,
-                    ).send()
-                else:
+                if response.status != 200:
                     error_text = await response.text()
                     await cl.Message(content=f"Error from API: {error_text}").send()
-        cl.user_session.set("video_path", dest_path)
+                    return
 
-    except Exception as e:
-        await cl.Message(content=f"Error handling video file: {str(e)}").send()
+                data = await response.json()
+                task_id = data.get("task_id")
+                await cl.Message(content="Your video is being processed, please wait...").send()
+
+                while True:
+                    await asyncio.sleep(DEFAULT_RETRY_INTERVAL_SEC)  # wait before polling
+                    async with session.get(f"{API_BASE_URL}/task-status/{task_id}") as status_resp:
+                        if status_resp.status != 200:
+                            await cl.Message(content="Error checking task status").send()
+                            break
+                        status_data = await status_resp.json()
+                        status = status_data.get("status")
+
+                        if TaskStatus(status) == TaskStatus.COMPLETED:
+                            elements = [
+                                cl.Video(name=video_file.name, path=dest_path, display="inline"),
+                            ]
+                            await cl.Message(
+                                content="Video processed successfully!",
+                                elements=elements,
+                            ).send()
+                            break
+                        elif TaskStatus(status) == TaskStatus.FAILED:
+                            await cl.Message(content="Video processing failed.").send()
+                            break
+
+            cl.user_session.set("video_path", dest_path)
+
+        except Exception as e:
+            await cl.Message(content=f"Error handling video file: {str(e)}").send()
 
 
 @cl.on_message

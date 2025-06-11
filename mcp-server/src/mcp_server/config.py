@@ -4,9 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file="mcp-server/.env", extra="ignore", env_file_encoding="utf-8"
-    )
+    model_config = SettingsConfigDict(env_file="mcp-server/.env", extra="ignore", env_file_encoding="utf-8")
 
     # --- OPIK Configuration ---
     OPIK_API_KEY: str
@@ -18,19 +16,20 @@ class Settings(BaseSettings):
     GROQ_VLM_MODEL: str = "meta-llama/llama-4-scout-17b-16e-instruct"
 
     # --- Video Ingestion Configuration ---
-    VIDEO_CLIP_LENGTH: int = 60
     SPLIT_FPS: float = 1.0
-    AUDIO_CHUNK_LENGTH: int = 30
+    AUDIO_CHUNK_LENGTH: int = 10
+    AUDIO_OVERLAP_SECONDS: int = 5
 
     # --- Speech Similarity Search Configuration ---
     SPEECH_SIMILARITY_EMBD_MODEL: str = "openai/whisper-large-v3"
+    TRANSCRIPT_SIMILARITY_EMBD_MODEL: str = "intfloat/e5-large-v2"
 
     # --- Image Similarity Search Configuration ---
-    IMAGE_SIMILARITY_EMBD_MODEL: str = "clip-vit-base-patch32"
-    DELTA_SECONDS_FRAME_INTERVAL: float = 3.0
+    IMAGE_SIMILARITY_EMBD_MODEL: str = "openai/clip-vit-base-patch32"
 
     # --- Caption Similarity Search Configuration ---
-    CAPTION_SIMILARITY_EMBD_MODEL: str = "clip-vit-base-patch32"
+    CAPTION_MODEL_PROMPT: str = "Explain in detail everything you see in the image."
+    CAPTION_SIMILARITY_EMBD_MODEL: str = "openai/clip-vit-base-patch32"
     DELTA_SECONDS_FRAME_INTERVAL: float = 3.0
 
     # --- Video Search Engine Configuration ---
