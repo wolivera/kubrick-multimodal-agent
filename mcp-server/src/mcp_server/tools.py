@@ -26,11 +26,11 @@ def process_video(video_path: str) -> str:
     Raises:
         ValueError: If the video file cannot be found or processed.
     """
-    video_processor.setup_table(video_name=video_path)
     exists = video_processor._check_if_exists()
     if exists:
         logger.info(f"Video index for '{video_path}' already exists and is ready for use.")
         return False
+    video_processor.setup_table(video_name=video_path)
     is_done = video_processor.add_video(video_path=video_path)
     return is_done
 

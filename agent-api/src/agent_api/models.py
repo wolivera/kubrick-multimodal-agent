@@ -16,6 +16,7 @@ class ProcessVideoRequest(BaseModel):
 
 class ProcessVideoResponse(BaseModel):
     message: str
+    task_id: str
 
 
 class ResetMemoryResponse(BaseModel):

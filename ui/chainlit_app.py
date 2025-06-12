@@ -2,6 +2,7 @@ import asyncio
 import os
 import shutil
 from enum import Enum
+from typing import List
 
 import aiohttp
 import chainlit as cl
@@ -17,11 +18,35 @@ class TaskStatus(str, Enum):
 
 API_BASE_URL = "http://agent-api:8080"  # Adjust to your FastAPI server address
 DEFAULT_RETRY_INTERVAL_SEC = 10
+LOADING_SPINNER_FRAMES = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"]
+LOADING_SPINNER_TASK = None
+
 os.makedirs("videos", exist_ok=True)
+
+
+async def spinner_func(base_msg: str, frames: List[str], interval: float = 0.8) -> None:
+    msg = cl.Message(content=base_msg)
+    await msg.send()
+
+    progress = 0
+    bar_length = 12
+
+    try:
+        while True:
+            current_frame = frames[progress % len(frames)]
+            progress_bar = ("▣" * (progress % bar_length)).ljust(bar_length, "▢")
+            msg.content = f"{current_frame} {base_msg}\n{progress_bar}"
+            await msg.update()
+
+            progress += 1
+            await asyncio.sleep(interval)
+    except asyncio.CancelledError:
+        await msg.update(content=base_msg)
 
 
 @cl.on_chat_start
 async def start():
+    global LOADING_SPINNER_TASK
     files = None
 
     while not files:
@@ -48,10 +73,7 @@ async def start():
 
                 data = await response.json()
                 task_id = data.get("task_id")
-                await cl.Message(content="Your video is being processed, please wait...").send()
-
                 while True:
-                    await asyncio.sleep(DEFAULT_RETRY_INTERVAL_SEC)  # wait before polling
                     async with session.get(f"{API_BASE_URL}/task-status/{task_id}") as status_resp:
                         if status_resp.status != 200:
                             await cl.Message(content="Error checking task status").send()
@@ -59,18 +81,34 @@ async def start():
                         status_data = await status_resp.json()
                         status = status_data.get("status")
 
-                        if TaskStatus(status) == TaskStatus.COMPLETED:
-                            elements = [
-                                cl.Video(name=video_file.name, path=dest_path, display="inline"),
-                            ]
-                            await cl.Message(
-                                content="Video processed successfully!",
-                                elements=elements,
-                            ).send()
+                        if TaskStatus(status) == TaskStatus.IN_PROGRESS:
+                            if LOADING_SPINNER_TASK is None or LOADING_SPINNER_TASK.done():
+                                LOADING_SPINNER_TASK = asyncio.create_task(
+                                    spinner_func(
+                                        base_msg="Processing your video...",
+                                        frames=LOADING_SPINNER_FRAMES,
+                                        interval=0.5,
+                                    )
+                                )
+                        elif TaskStatus(status) == TaskStatus.COMPLETED:
+                            if LOADING_SPINNER_TASK:
+                                LOADING_SPINNER_TASK.cancel()
+                                try:
+                                    await LOADING_SPINNER_TASK
+                                except asyncio.CancelledError:
+                                    pass
+                            await cl.Message(content="Video processed successfully!").send()
                             break
                         elif TaskStatus(status) == TaskStatus.FAILED:
+                            if LOADING_SPINNER_TASK:
+                                LOADING_SPINNER_TASK.cancel()
+                                try:
+                                    await LOADING_SPINNER_TASK
+                                except asyncio.CancelledError:
+                                    pass
                             await cl.Message(content="Video processing failed.").send()
                             break
+                    await asyncio.sleep(DEFAULT_RETRY_INTERVAL_SEC)  # wait before polling
 
             cl.user_session.set("video_path", dest_path)
 
