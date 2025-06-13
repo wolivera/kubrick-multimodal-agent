@@ -9,12 +9,14 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str
     GROQ_ROUTING_MODEL: str = "llama3-70b-8192"
     GROQ_TOOL_USE_MODEL: str = "llama-3.3-70b-versatile"
+    GROQ_IMAGE_MODEL: str = "meta-llama/llama-4-scout-17b-16e-instruct"
     GROQ_GENERAL_MODEL: str = "llama3-70b-8192"
 
     # --- Comet ML & Opik Configuration ---
-    COMET_API_KEY: str | None = Field(default=None, description="API key for Comet ML and Opik services.")
-    COMET_PROJECT: str = Field(
-        default="multimodal-agent-course",
+    OPIK_API_KEY: str | None = Field(default=None, description="API key for Comet ML and Opik services.")
+    OPIK_WORKSPACE: str = "default"
+    OPIK_PROJECT: str = Field(
+        default="kubrick-api",
         description="Project name for Comet ML and Opik tracking.",
     )
 

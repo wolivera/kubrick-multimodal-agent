@@ -1,14 +1,14 @@
+from contextlib import asynccontextmanager
 from enum import Enum
 from pathlib import Path
 from uuid import uuid4
 
-from fastapi import BackgroundTasks, FastAPI, HTTPException
-from fastmcp.client import Client
-from loguru import logger
-
 from agent_api.agent import GroqAgent
 from agent_api.config import settings
 from agent_api.models import ChatRequest, ChatResponse, ProcessVideoRequest, ProcessVideoResponse, ResetMemoryResponse
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
+from fastmcp.client import Client
+from loguru import logger
 
 
 class TaskStatus(str, Enum):
@@ -23,17 +23,23 @@ class TaskStatus(str, Enum):
 
 bg_task_states = {}
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.agent = GroqAgent(
+        name="kubrick",
+        mcp_server=settings.MCP_SERVER,
+        active_tools=["process_video", "get_video_clip_from_image"],
+    )
+    yield
+    app.state.agent.reset_memory()
+
+
 app = FastAPI(
     title="Kubrick API",
     description="An AI-powered sports assistant API using OpenAI",
     docs_url="/docs",
-)
-
-
-agent = GroqAgent(
-    name="kubrick",
-    mcp_server=settings.MCP_SERVER,
-    active_tools=["process_video", "get_video_clip_from_image"],
+    lifespan=lifespan,
 )
 
 
@@ -83,7 +89,7 @@ async def process_video(request: ProcessVideoRequest, bg_tasks: BackgroundTasks)
 
 
 @app.post("/chat", response_model=ChatResponse)
-async def chat(request: ChatRequest):
+async def chat(request: ChatRequest, fastapi_request: Request):
     """
     Chat with the AI assistant
 
@@ -93,6 +99,7 @@ async def chat(request: ChatRequest):
     Returns:
         ChatResponse containing the assistant's response
     """
+    agent = fastapi_request.app.state.agent
     await agent.setup()
 
     try:
@@ -103,10 +110,11 @@ async def chat(request: ChatRequest):
 
 
 @app.post("/reset-memory")
-async def reset_memory():
+async def reset_memory(fastapi_request: Request):
     """
     Reset the memory of the agent
     """
+    agent = fastapi_request.app.state.agent
     agent.reset_memory()
     return ResetMemoryResponse(message="Memory reset successfully")
 
