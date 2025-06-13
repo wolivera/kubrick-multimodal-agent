@@ -9,8 +9,15 @@ services:
       - ./mcp-server/.env
     networks:
       - agent-network
+    environment:
+    # https://huggingface.co/docs/huggingface_hub/en/package_reference/environment_variables#xdgcachehome
+      - HF_HOME=/root/.cache/huggingface
     volumes:
+      - ./.vscode:/app/.vscode
+      - ~/.pixeltable:/root/.pixeltable
       - ./videos:/app/videos
+      - ~/.cache:/root/.cache
+      - ~/.cache/huggingface:/root/.cache/huggingface
   agent-api:
     container_name: agent-api
     build:
@@ -27,6 +34,7 @@ services:
       - mcp-server
     volumes:
       - ./videos:/app/videos
+      - ./.vscode:/app/.vscode
   ui:
     container_name: ui
     build:
@@ -34,9 +42,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8501:8501"
-    depends_on:
-      - agent-api
-      - mcp-server
+    # depends_on:
+      # - agent-api
+      # - mcp-server
     networks:
       - agent-network
     volumes:

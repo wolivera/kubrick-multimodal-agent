@@ -11,13 +11,6 @@ def caption_image(image: pxt.type_system.Image, prompt: pxt.type_system.String) 
 
 
 @pxt.udf
-def compose_semantics(
-    video_caption: pxt.type_system.String, transcript: pxt.type_system.Json
-) -> str:
-    return f"{video_caption}.{transcript['text']}"
-
-
-@pxt.udf
 def extract_text_from_chunk(transcript: pxt.type_system.Json) -> str:
     return f"{transcript['text']}"
 

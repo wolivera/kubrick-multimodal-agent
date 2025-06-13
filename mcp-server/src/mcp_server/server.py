@@ -1,6 +1,6 @@
 from fastmcp import FastMCP
 
-from mcp_server.prompts import routing_system_prompt, tool_use_system_prompt, general_system_prompt
+from mcp_server.prompts import general_system_prompt, routing_system_prompt, tool_use_system_prompt
 from mcp_server.resources import list_tables
 from mcp_server.tools import (
     ask_question_about_video,
@@ -80,4 +80,4 @@ add_mcp_tools(mcp)
 add_mcp_resources(mcp)
 
 if __name__ == "__main__":
-    mcp.run(host="0.0.0.0", port=8000, transport="streamable-http")
+    mcp.run(host="0.0.0.0", port=9090, transport="streamable-http")
