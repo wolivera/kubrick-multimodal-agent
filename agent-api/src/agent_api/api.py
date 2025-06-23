@@ -10,14 +10,15 @@ from loguru import logger
 from agent_api.agent import GroqAgent
 from agent_api.config import get_settings
 from agent_api.models import (
+    AssistantMessageResponse,
     ProcessVideoRequest,
     ProcessVideoResponse,
     ResetMemoryResponse,
     UserMessageRequest,
-    AssistantMessageResponse,
 )
 
 settings = get_settings()
+
 
 class TaskStatus(str, Enum):
     PENDING = "pending"
@@ -82,9 +83,7 @@ async def process_video(request: ProcessVideoRequest, bg_tasks: BackgroundTasks,
         try:
             mcp_client = Client(settings.MCP_SERVER)
             async with mcp_client:
-                _ = await mcp_client.call_tool(
-                    "process_video", {"video_path": request.video_path}
-                )
+                _ = await mcp_client.call_tool("process_video", {"video_path": request.video_path})
         except Exception as e:
             logger.error(f"Error processing video {video_path}: {e}")
             bg_task_states[task_id] = TaskStatus.FAILED
