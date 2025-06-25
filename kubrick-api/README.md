@@ -1,5 +1,5 @@
 <p align="center">
-        <img alt="logo" src="static/kubrick_api_diagram.png" width=1000 />
+        <img alt="logo" src="static/agent_architecture.gif" width=1000 />
     <h1 align="center">⚡ Kubrick API ⚡</h1>
     <h3 align="center">A FastAPI backend for serving Kubrick’s video tools</h3>
 </p>

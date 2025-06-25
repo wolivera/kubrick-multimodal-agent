@@ -1,5 +1,5 @@
 <p align="center">
-        <video src="../static/diagrams/[PartI][MCP]-Architecture.mp4" autoplay width=1000/>
+        <img src="static/mcp_architecture.gif" autoplay width=1000/>
     <h1 align="center">🔌 Kubrick MCP 🔌</h1>
     <h3 align="center">An MCP server for serious video processing</h3>
 </p>
