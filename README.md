@@ -125,9 +125,9 @@ To get the most out of this course, we recommend:
 - Follow the Video Lessons for hands-on implementation.
 - Set up the code and run the project.
 
-| Module No. | Written Lesson (Link) | Video Lesson | Description | Code Module |
-| - | -------------- | ------------ | ----------- | ----------- |
-| 0 | <a href="https://theneuralmaze.substack.com/p/your-first-video-agent-multimodality"><img src="static/kubrick_ai_diagram.png" width=400></a> | Coming Soon | Short course introduction and overview. Outlining the basic components | N/A
+| Module No. | Written Lesson (Link) |  Description | Code |
+| - | -------------- | ------------ | ----------- |
+| 0 | <a href="https://theneuralmaze.substack.com/p/your-first-video-agent-multimodality"><img src="static/kubrick_ai_diagram.png" width=400></a> Short course introduction and overview. Outlining the basic components | N/A
 
 
 ## Sponsors
@@ -176,6 +176,6 @@ To get the most out of this course, we recommend:
 
 | Publication | Description | Subscribe |
 |:---:|---|:---:|
-| <a href="https://neuralbits.substack.com/" aria-label="Neural Bits"><img src="https://avatars.githubusercontent.com/u/114508542?s=400&u=abae5b0d28f288fc12502b170167a2ccce133f31&v=4" alt="Neural Bits Logo" width="100"/><br/><p align="center">**Neural Bits**</p></a> | Learn about industry standards and production-ready AI Engineering. | <a href="https://neuralbits.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
+| <a href="https://neuralbits.substack.com/" aria-label="Neural Bits"><img src="https://avatars.githubusercontent.com/u/114508542?s=400&u=abae5b0d28f288fc12502b170167a2ccce133f31&v=4" alt="Neural Bits Logo" width="100"/><br/><p align="center">**Neural Bits**</a></p>| Learn about industry standards and production-ready AI Engineering. | <a href="https://neuralbits.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
 | <a href="https://theneuralmaze.substack.com/" aria-label="The Neural Maze"><img src="https://avatars.githubusercontent.com/u/151655127?s=400&u=2fff53e8c195ac155e5c8ee65c6ba683a72e655f&v=4" alt="The Neural Maze Logo" width="100"/><br/><p align="center">**The Neural Maze**</a> </a> | Learn to build AI Systems that actually work, from principles to production. Delivered every Wednesday. | <a href="https://theneuralmaze.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
 
