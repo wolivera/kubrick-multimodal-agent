@@ -1,27 +1,22 @@
-<p align="center">
-        <img alt="logo" src="static/kubrick_ai_diagram.png" width=1000 />
-    <h1 align="center">🎥 Kubrick Course 🎥</h1>
-    <h3 align="center">An MCP Multimodal Agent for Video Processing</h3>
-</p>
-
+<h1 align="center">Kubrick Course </h1>
 <p align="center">
     <img alt="logo" src="static/hal_9000.png" width=100 />
+    <h4 align="center" >Hi Dave...</h4>
+</p>
+<hr>
+<p align="center">
+    <h4 align="center">Learn to build AI Agents that can understand images, text, audio and videos.</h3>
 </p>
 
-## Table of Contents
+<p align="center"> An Open-source course by <a href="https://theneuralmaze.substack.com"> The Neural Maze </a> and <a href="https://neuralbits.substack.com">Neural Bits</a> in collaboration with <a href="https://github.com/pixeltable">Pixeltable</a> and <a href="https://github.com/comet-ml/opik">Opik</a>
+</p>
+</br>
+<img alt="logo" src="kubrick-api/static/agent_architecture.gif" width=1000 />
+</br>
 
-- [Table of Contents](#table-of-contents)
-- [Course Overview](#course-overview)
-- [Who is this course for?](#what-youll-build)
-- [What you'll get out of this course](#why-it-matters)
-- [Getting started](#getting-started)
-- [Course syllabus](#course-syllabus)
-- [How much is this going to cost me?](#how-much-is-this-going-to-cost-me)
-- [Sponsors](#sponsors)
-- [Contributors](#contributors)
+---
 
-## Course Overview
-
+## 📖 About This Course
 Tired of tutorials that just walk you through connecting an existing MCP server to Claude Desktop? 
 
 Yeah, us too.
@@ -36,42 +31,8 @@ This course, is a collaboration between The Neural Maze and Neural Bits (from no
 
 * Integrate your agentic system with Opik for full observability and prompt versioning
 
-> No shortcuts. No fluff. Let's learn by doing.
 
-<video src="https://github.com/user-attachments/assets/ef77c2a9-1a77-4f14-b2dd-e759c3f6db72"/></video>
-
----
-
-<table style="border-collapse: collapse; border: none;">
-  <tr style="border: none;">
-    <td width="20%" style="border: none;">
-      <a href="https://theneuralmaze.substack.com/" aria-label="The Neural Maze">
-        <img src="https://avatars.githubusercontent.com/u/151655127?s=400&u=2fff53e8c195ac155e5c8ee65c6ba683a72e655f&v=4" alt="The Neural Maze Logo" width="150"/>
-      </a>
-    </td>
-    <td width="80%" style="border: none;">
-      <div>
-        <h2>📬 Stay Updated</h2>
-        <p><b><a href="https://theneuralmaze.substack.com/">Join The Neural Maze</a></b> and learn to build AI Systems that actually work, from principles to production. Every Wednesday, directly to your inbox. Don't miss out!</p>
-      </div>
-    </td>
-  </tr>
-</table>
-
-<p align="center">
-  <a href="https://theneuralmaze.substack.com/">
-    <img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="40">
-  </a>
-</p>
-
----
-
-## Who is this course for?
-
-This course is for Software Engineers, ML Engineers, and AI Engineers who want to level up by building complex end-to-end systems. 
-
-## What you'll get out of this course
-
+## 🖊️ What you'll learn
 * Learn how to use Pixeltable for multimodal data processing and stateful agents
 
 * Create complex MCP servers using FastMCP: expose resources, prompts and tools
@@ -85,20 +46,89 @@ This course is for Software Engineers, ML Engineers, and AI Engineers who want t
 * Use Opik for MCP prompt versioning
 
 * Learn how to implement custom tracing and monitoring with Opik
+> No shortcuts. No fluff. Let's learn by doing.
 
-## Getting started
+---
 
-TODO
+## 💻 What You'll Do:
 
-## Course syllabus
+Completing this course, you'll learn how to design and enable Agents to understand multimodal data, across images, video, audio and text inputs all within a single system. 
 
-TODO
+Specifically, you'll get to:
 
---
+- Build a complex Multimodal Processing Pipeline
+- Build a Video Search Engine and expose its functionality to an Agent via MCP (Model Context Protocol)
+- Build a production ready API to power the Agent.
+- Integrate LLMOps principles and best software engineering practices.
+- Learn about video, embeddings, streaming APIs, Vision Language Models (VLMs) and more.
 
-## How much is this going to cost me?
+After completing this course, you'll have built your own Kubrick Agent with a HAL themed spin-off, to play the role of a new set of eyes and ears:
 
---
+<video src="https://github.com/user-attachments/assets/ef77c2a9-1a77-4f14-b2dd-e759c3f6db72"/></video>
+
+---
+
+| Publication | Description | Subscribe |
+|:---:|---|:---:|
+| <a href="https://neuralbits.substack.com/" aria-label="Neural Bits"><img src="https://avatars.githubusercontent.com/u/114508542?s=400&u=abae5b0d28f288fc12502b170167a2ccce133f31&v=4" alt="Neural Bits Logo" width="100"/><br/><p align="center">**Neural Bits**</p></a> | Learn about industry standards and production-ready AI Engineering. | <a href="https://neuralbits.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
+| <a href="https://theneuralmaze.substack.com/" aria-label="The Neural Maze"><img src="https://avatars.githubusercontent.com/u/151655127?s=400&u=2fff53e8c195ac155e5c8ee65c6ba683a72e655f&v=4" alt="The Neural Maze Logo" width="100"/><br/><p align="center">**The Neural Maze**</a> </a> | Learn to build AI Systems that actually work, from principles to production. Delivered every Wednesday. | <a href="https://theneuralmaze.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
+
+
+---
+
+## 🧑‍🎓 Who is this course for?
+You'll get the most of this course by building it yourself, from the ground up. 
+The course components are structured to cover key concepts, and showcase how to build on top of them, towards AI Systems.
+
+| Target Audience |	Skills you'll get |
+| ----- | ------------------|
+| ML/AI Engineers |	Build complex MCP Servers, learn to apply AI Models to Video, Images and Speech.|
+| Software Engineers | Learn to connect AI Components with APIs, building end-to-end agentic applications.|
+| Data Engineers/Scientists | Learn to design an AI System, managing Video/Audio/Image data processing and structure.
+
+Regardless of your experience or title, this course aims to unpack complex topics in practical terms and concepts you could understand, learn and apply - helping you to build a complete AI system.
+
+## 🎓 Prerequisites
+In this section, we outlined a few requirements and nice-to-haves to improve your learning experience while taking this course.
+| Category | Label | Description |
+|----------| ----- | ----------- |
+| Programming Skills (Beginner) | Requirement | Understanding of Programming in general, and the Python language syntax.
+| AI/ML Concepts (Beginner) | Nice to Have | Understanding the basic concepts behind AI, AI Models and AI Systems.
+| LLMs, MCP, Agents | Nice to Have | Perfect if you know about them, not a problem if you don't. We'll teach and explain it step by step.
+| Laptop/PC with any OS | Requirement | AI Models inference requires compute. To overcome that, we'll mainly use API based models.|
+
+The overall level of this course is Beginner/Intermediate, but don't worry. We'll aim to explain every component step by step designed for a larger audience.
+
+## 💰 What's the cost?
+This course and its materials are open-source and completely free, thanks to our sponsors, Pixeltable and Opik! 
+
+You'll be able to run Kubrick examples while staying at 0 cost. That's because we'll use OpenAI and Groq for our LLM and VLM calls, which offer freemium plans as such:
+
+| Provider | Free Credits |
+| -------- |  ----------- |
+| OpenAI   |  $5/month on sign-up |
+| Groq | 500,000 tokens / day
+
+> [!NOTE]  
+> In this setup, for running the Kubrick Agent example - the freemium plans are enough.
+
+
+## 📚 Course Syllabus
+The Kubrick Agent open-source course consists of 5 comprehensive modules, going through concepts, system design, tooling and hands-on implementation.
+
+
+To get the most out of this course, we recommend:
+
+- Clone this repository.
+- Follow the Get Started Sections of each module.
+- Read the module articles to understand each component.
+- Follow the Video Lessons for hands-on implementation.
+- Set up the code and run the project.
+
+| Module No. | Written Lesson (Link) | Video Lesson | Description | Code Module |
+| - | -------------- | ------------ | ----------- | ----------- |
+| 0 | <a href="https://theneuralmaze.substack.com/p/your-first-video-agent-multimodality"><img src="static/kubrick_ai_diagram.png" width=400></a> | Coming Soon | Short course introduction and overview. Outlining the basic components | N/A
+
 
 ## Sponsors
 
@@ -144,26 +174,8 @@ TODO
 
 ---
 
-<table style="border-collapse: collapse; border: none;">
-  <tr style="border: none;">
-    <td width="20%" style="border: none;">
-      <a href="https://theneuralmaze.substack.com/" aria-label="The Neural Maze">
-        <img src="https://avatars.githubusercontent.com/u/151655127?s=400&u=2fff53e8c195ac155e5c8ee65c6ba683a72e655f&v=4" alt="The Neural Maze Logo" width="150"/>
-      </a>
-    </td>
-    <td width="80%" style="border: none;">
-      <div>
-        <h2>📬 Stay Updated</h2>
-        <p><b><a href="https://theneuralmaze.substack.com/">Join The Neural Maze</a></b> and learn to build AI Systems that actually work, from principles to production. Every Wednesday, directly to your inbox. Don't miss out!</p>
-      </div>
-    </td>
-  </tr>
-</table>
-
-<p align="center">
-  <a href="https://theneuralmaze.substack.com/">
-    <img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="40">
-  </a>
-</p>
-
+| Publication | Description | Subscribe |
+|:---:|---|:---:|
+| <a href="https://neuralbits.substack.com/" aria-label="Neural Bits"><img src="https://avatars.githubusercontent.com/u/114508542?s=400&u=abae5b0d28f288fc12502b170167a2ccce133f31&v=4" alt="Neural Bits Logo" width="100"/><br/><p align="center">**Neural Bits**</p></a> | Learn about industry standards and production-ready AI Engineering. | <a href="https://neuralbits.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
+| <a href="https://theneuralmaze.substack.com/" aria-label="The Neural Maze"><img src="https://avatars.githubusercontent.com/u/151655127?s=400&u=2fff53e8c195ac155e5c8ee65c6ba683a72e655f&v=4" alt="The Neural Maze Logo" width="100"/><br/><p align="center">**The Neural Maze**</a> </a> | Learn to build AI Systems that actually work, from principles to production. Delivered every Wednesday. | <a href="https://theneuralmaze.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
 
