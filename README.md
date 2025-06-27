@@ -8,7 +8,7 @@
     <h4 align="center">Learn to build AI Agents that can understand images, text, audio and videos.</h3>
 </p>
 
-<p align="center"> An Open-source course by <a href="https://theneuralmaze.substack.com"> The Neural Maze </a> and <a href="https://neuralbits.substack.com">Neural Bits</a> in collaboration with <a href="https://github.com/pixeltable">Pixeltable</a> and <a href="https://github.com/comet-ml/opik">Opik</a>
+<p align="center"> A <b>free, Open-source</b> course by <a href="https://theneuralmaze.substack.com"> The Neural Maze </a> and <a href="https://neuralbits.substack.com">Neural Bits</a> in collaboration with <a href="https://github.com/pixeltable">Pixeltable</a> and <a href="https://github.com/comet-ml/opik">Opik</a>
 </p>
 </br>
 <img alt="logo" src="kubrick-api/static/agent_architecture.gif" width=1000 />
@@ -127,50 +127,52 @@ To get the most out of this course, we recommend:
 
 | Module No. | Written Lesson (Link) |  Description | Code |
 | - | -------------- | ------------ | ----------- |
-| 0 | <a href="https://theneuralmaze.substack.com/p/your-first-video-agent-multimodality"><img src="static/kubrick_ai_diagram.png" width=400></a> Short course introduction and overview. Outlining the basic components | N/A
+| 0 | <a href="https://theneuralmaze.substack.com/p/your-first-video-agent-multimodality"><img src="static/kubrick_ai_diagram.png" width=500></a> | Short course introduction and overview. Outlining the basic components  | N/A 
 
 
 ## Sponsors
+|  |  |
+|:---:|:---:|
+| <a href="https://www.pixeltable.com/" target="_blank"><img src="static/sponsors/pixeltable.png" width="300" alt="Pixeltable"></a> | <a href="https://github.com/comet-ml/opik" target="_blank"> <img src="static/sponsors/opik.png" width="300" alt="Opik"></a>|
+| <p align="center">**Pixeltable** </br> is the only Python framework that provides incremental storage, transformation, indexing, and orchestration of your multimodal data.</p> | <p align="center">**Opik** </br>LLM Evaluation platform helps you build, evaluate, and optimize LLM systems that run better, faster, and cheaper</p> 
+
+## Contributors
+---
 
 <div align="center">
-  <table style="border-collapse: collapse; border: none;">
-    <tr style="border: none;">
-      <td align="center" style="border: none; padding: 20px;">
-        <a href="https://www.pixeltable.com/" target="_blank">
-          <img src="static/sponsors/pixeltable.png" width="200" style="max-height: 200px; width: auto;" alt="Pixeltable">
-        </a>
+  <table>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/MichaelisTrofficus">
+          <img src="https://github.com/MichaelisTrofficus.png" width="100px;" alt="Miguel Otero Pedrido"/><br />
+          <sub><b>Miguel Otero Pedrido</b></sub>
+        </a><br />
+        <sub>AI / ML Engineer</sub>
+        <p>
+        </br>
+          <a href="https://linkedin.com/in/migueloteropedrido" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+          </a>
+        </p>
       </td>
-      <td align="center" style="border: none; padding: 20px;">
-        <a href="https://github.com/comet-ml/opik" target="_blank">
-          <img src="static/sponsors/opik.png" width="200" style="max-height: 200px; width: auto;" alt="Opik">
-        </a>
+      <td align="center">
+        <a href="https://github.com/Joywalker">
+          <img src="https://github.com/Joywalker.png" width="100px;" alt="Alex Razvant"/><br />
+          <sub><b>Alex Razvant</b></sub>
+        </a><br />
+        <sub>AI / ML Engineer</sub>
+        <p>
+        </br>
+          <a href="https://www.linkedin.com//arazvant" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+          </a>
+        </p>
       </td>
     </tr>
   </table>
 </div>
 
-
-## Contributors
-
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/MichaelisTrofficus">
-        <img src="https://github.com/MichaelisTrofficus.png" width="100px;" alt="Miguel Otero Pedrido"/><br />
-        <sub><b>Miguel Otero Pedrido</b></sub>
-      </a><br />
-      <sub>AI / ML Engineer</sub>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Joywalker">
-        <img src="https://github.com/Joywalker.png" width="100px;" alt="Alex Razvant"/><br />
-        <sub><b>Alex Razvant</b></sub>
-      </a><br />
-      <sub>AI / ML Engineer</sub>
-    </td>
-  </tr>
-</table>
+---
 
 ---
 
