@@ -1,6 +1,6 @@
-import { useRef } from 'react';
-import { Play, Upload, X, Loader2, Pause, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AlertCircle, CheckCircle, Loader2, Play, Upload, X } from 'lucide-react';
+import { useRef } from 'react';
 
 interface UploadedVideo {
   id: string;

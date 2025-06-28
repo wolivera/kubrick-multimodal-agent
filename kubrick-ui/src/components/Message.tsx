@@ -1,5 +1,3 @@
-import { Play } from 'lucide-react';
-
 interface MessageProps {
   id: string;
   content: string;
