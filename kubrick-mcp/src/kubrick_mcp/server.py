@@ -1,10 +1,7 @@
+import click
 from fastmcp import FastMCP
 
-from kubrick_mcp.prompts import (
-    general_system_prompt,
-    routing_system_prompt,
-    tool_use_system_prompt,
-)
+from kubrick_mcp.prompts import general_system_prompt, routing_system_prompt, tool_use_system_prompt
 from kubrick_mcp.resources import list_tables
 from kubrick_mcp.tools import (
     ask_question_about_video,
@@ -82,3 +79,14 @@ mcp = FastMCP("VideoProcessor")
 add_mcp_prompts(mcp)
 add_mcp_tools(mcp)
 add_mcp_resources(mcp)
+
+
+@click.command()
+@click.option("--port", default=9090, help="FastMCP server port")
+@click.option("--host", default="0.0.0.0", help="FastMCP server host")
+@click.option("--transport", default="streamable-http", help="MCP Transport protocol type")
+def run_mcp(port, host, transport):
+    """
+    Run the FastMCP server with the specified port, host, and transport protocol.
+    """
+    mcp.run(host=host, port=port, transport=transport)

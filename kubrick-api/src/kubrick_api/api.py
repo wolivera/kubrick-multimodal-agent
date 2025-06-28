@@ -4,6 +4,7 @@ from enum import Enum
 from pathlib import Path
 from uuid import uuid4
 
+import click
 from fastapi import BackgroundTasks, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -80,9 +81,7 @@ async def get_task_status(task_id: str, fastapi_request: Request):
 
 
 @app.post("/process-video")
-async def process_video(
-    request: ProcessVideoRequest, bg_tasks: BackgroundTasks, fastapi_request: Request
-):
+async def process_video(request: ProcessVideoRequest, bg_tasks: BackgroundTasks, fastapi_request: Request):
     """
     Process a video and return the results
     """
@@ -102,9 +101,7 @@ async def process_video(
         try:
             mcp_client = Client(settings.MCP_SERVER)
             async with mcp_client:
-                _ = await mcp_client.call_tool(
-                    "process_video", {"video_path": request.video_path}
-                )
+                _ = await mcp_client.call_tool("process_video", {"video_path": request.video_path})
         except Exception as e:
             logger.error(f"Error processing video {video_path}: {e}")
             bg_task_states[task_id] = TaskStatus.FAILED
@@ -130,9 +127,7 @@ async def chat(request: UserMessageRequest, fastapi_request: Request):
     await agent.setup()
 
     try:
-        response = await agent.chat(
-            request.message, request.video_path, request.image_base64
-        )
+        response = await agent.chat(request.message, request.video_path, request.image_base64)
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -170,9 +165,7 @@ async def upload_video(file: UploadFile = File(...)):
         with open(video_path, "wb") as f:
             shutil.copyfileobj(file.file, f)
 
-        return VideoUploadResponse(
-            message="Video uploaded successfully", video_path=video_path
-        )
+        return VideoUploadResponse(message="Video uploaded successfully", video_path=video_path)
     except Exception as e:
         logger.error(f"Error uploading video: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -194,3 +187,16 @@ async def serve_media(file_path: str):
     except Exception as e:
         logger.error(f"Error serving media file {file_path}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@click.command()
+@click.option("--port", default=8080, help="FastAPI server port")
+@click.option("--host", default="0.0.0.0", help="FastAPI server host")
+def run_api(port, host):
+    import uvicorn
+
+    uvicorn.run("api:app", host=host, port=port)
+
+
+if __name__ == "__main__":
+    run_api()
