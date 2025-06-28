@@ -1,4 +1,4 @@
-<h1 align="center">Kubrick Course </h1>
+<h1 align="center">Kubrick Course</h1>
 <p align="center">
     <img alt="logo" src="static/hal_9000.png" width=100 />
     <h4 align="center" >Hi Dave...</h4>
@@ -106,7 +106,7 @@ You'll be able to run Kubrick examples while staying at 0 cost. That's because w
 
 | Provider | Free Credits |
 | -------- |  ----------- |
-| OpenAI   |  $5/month on sign-up |
+| OpenAI   |  $5 on first sign-up |
 | Groq | 500,000 tokens / day
 
 > [!NOTE]  
@@ -171,8 +171,6 @@ To get the most out of this course, we recommend:
     </tr>
   </table>
 </div>
-
----
 
 ---
 
