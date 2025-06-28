@@ -7,6 +7,7 @@ services:
       - "9090:9090"
     env_file:
       - ./kubrick-mcp/.env
+    command: sleep infinity
     networks:
       - agent-network
     environment:
@@ -16,10 +17,21 @@ services:
       - shared_media:/app/shared_media
       - ~/.cache:/root/.cache
       - ~/.cache/huggingface:/root/.cache/huggingface
+    
+    deploy:
+      resources:
+        limits:
+          cpus: '4' 
+          memory: 4G   
+        reservations:
+          cpus: '4'    
+          memory: 4G   
+
   kubrick-api:
     container_name: kubrick-api
     build:
       context: ./kubrick-api
+    command: sleep infinity
     ports:
       - "8080:8080"
     environment:

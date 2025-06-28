@@ -90,3 +90,7 @@ def run_mcp(port, host, transport):
     Run the FastMCP server with the specified port, host, and transport protocol.
     """
     mcp.run(host=host, port=port, transport=transport)
+
+
+if __name__ == "__main__":
+    run_mcp()
