@@ -16,7 +16,7 @@ class Memory:
     def __init__(self, name: str):
         self.directory = name
 
-        pxt.create_dir(self.directory, if_exists="ignore")
+        pxt.create_dir(self.directory, if_exists="replace_force")
 
         self._setup_table()
         self._memory_table = pxt.get_table(f"{self.directory}.memory")
@@ -47,6 +47,4 @@ class Memory:
         return self.get_all()[-n:]
 
     def get_by_message_id(self, message_id: str) -> MemoryRecord:
-        return self._memory_table.where(
-            self._memory_table.message_id == message_id
-        ).collect()[0]
+        return self._memory_table.where(self._memory_table.message_id == message_id).collect()[0]

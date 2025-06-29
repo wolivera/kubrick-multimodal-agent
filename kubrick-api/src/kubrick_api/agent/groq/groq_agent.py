@@ -40,9 +40,7 @@ class GroqAgent(BaseAgent):
             disable_tools,
         )
         self.client = Groq(api_key=settings.GROQ_API_KEY)
-        self.instructor_client = instructor.from_groq(
-            self.client, mode=instructor.Mode.JSON
-        )
+        self.instructor_client = instructor.from_groq(self.client, mode=instructor.Mode.JSON)
         self.thread_id = str(uuid.uuid4())
 
     async def _get_tools(self) -> List[Dict[str, Any]]:
@@ -58,10 +56,7 @@ class GroqAgent(BaseAgent):
         n: int = settings.AGENT_MEMORY_SIZE,
     ) -> List[Dict[str, Any]]:
         history = [{"role": "system", "content": system_prompt}]
-        history += [
-            {"role": record.role, "content": record.content}
-            for record in self.memory.get_latest(n)
-        ]
+        history += [{"role": record.role, "content": record.content} for record in self.memory.get_latest(n)]
 
         user_content = (
             [
@@ -95,9 +90,9 @@ class GroqAgent(BaseAgent):
         """Execute a single tool call and return its response."""
         function_name = tool_call.function.name
         function_args = json.loads(tool_call.function.arguments)
-        
+
         function_args["video_path"] = video_path
-        
+
         if function_name == "get_video_clip_from_image":
             function_args["user_image"] = image_base64
 
@@ -110,9 +105,7 @@ class GroqAgent(BaseAgent):
             return f"Error executing tool {function_name}: {str(e)}"
 
     @opik.track(name="tool-use", type="tool")
-    async def _run_with_tool(
-        self, message: str, video_path: str, image_base64: str | None = None
-    ) -> str:
+    async def _run_with_tool(self, message: str, video_path: str, image_base64: str | None = None) -> str:
         """Execute chat completion with tool usage."""
         tool_use_system_prompt = self.tool_use_system_prompt.format(
             is_image_provided=bool(image_base64),
@@ -132,7 +125,7 @@ class GroqAgent(BaseAgent):
         )
         tool_calls = response.tool_calls
         logger.info(f"Tool calls: {tool_calls}")
-        
+
         if not tool_calls:
             logger.info("No tool calls available, returning general response ...")
             return GeneralResponseModel(message=response.content)
@@ -151,14 +144,21 @@ class GroqAgent(BaseAgent):
             )
 
         response_model = (
-            GeneralResponseModel
-            if tool_call.function.name == "ask_question_about_video"
-            else VideoClipResponseModel
+            GeneralResponseModel if tool_call.function.name == "ask_question_about_video" else VideoClipResponseModel
         )
 
+        # TODO: Prompt need to be improved, tool-calling history + general response confuse the LLM
+        tmp_chat = [
+            {
+                "role": "system",
+                "content": "Your name is Kubrick, an AI assistant. You are helpful, creative, and friendly. The context you have contains informations about what's happening in a video, you will answer the user's question in a detailed manner.",
+            },
+            {"role": "user", "content": message},
+            {"role": "assistant", "content": function_response},
+        ]
         followup_response = self.instructor_client.chat.completions.create(
-            model=settings.GROQ_TOOL_USE_MODEL,
-            messages=chat_history,
+            model=settings.GROQ_GENERAL_MODEL,
+            messages=tmp_chat,
             response_model=response_model,
         )
 
