@@ -12,11 +12,10 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class CachedTableMetadata(BaseModel):
+    video_name: str = Field(..., description="Name of the video")
     video_cache: str = Field(..., description="Path to the video cache")
     video_table: str = Field(..., description="Root video table")
-    frames_view: str = Field(
-        ..., description="Video frames which were split using a FPS and frame iterator"
-    )
+    frames_view: str = Field(..., description="Video frames which were split using a FPS and frame iterator")
     audio_chunks_view: str = Field(
         ...,
         description="After chunking audio, getting transcript and splitting it into sentences",
@@ -26,9 +25,7 @@ class CachedTableMetadata(BaseModel):
 class CachedTable:
     video_cache: str = Field(..., description="Path to the video cache")
     video_table: pxt.Table = Field(..., description="Root video table")
-    frames_view: pxt.Table = Field(
-        ..., description="Video frames which were split using a FPS and frame iterator"
-    )
+    frames_view: pxt.Table = Field(..., description="Video frames which were split using a FPS and frame iterator")
     audio_chunks_view: pxt.Table = Field(
         ...,
         description="After chunking audio, getting transcript and splitting it into sentences",
@@ -36,11 +33,13 @@ class CachedTable:
 
     def __init__(
         self,
+        video_name: str,
         video_cache: str,
         video_table: pxt.Table,
         frames_view: pxt.Table,
         audio_chunks_view: pxt.Table,
     ):
+        self.video_name = video_name
         self.video_cache = video_cache
         self.video_table = video_table
         self.frames_view = frames_view
@@ -48,10 +47,9 @@ class CachedTable:
 
     @classmethod
     def from_metadata(cls, metadata: dict | CachedTableMetadata) -> "CachedTable":
-        metadata = (
-            CachedTableMetadata(**metadata) if isinstance(metadata, dict) else metadata
-        )
+        metadata = CachedTableMetadata(**metadata) if isinstance(metadata, dict) else metadata
         return cls(
+            video_name=metadata.video_name,
             video_cache=metadata.video_cache,
             video_table=pxt.get_table(metadata.video_table),
             frames_view=pxt.get_table(metadata.frames_view),

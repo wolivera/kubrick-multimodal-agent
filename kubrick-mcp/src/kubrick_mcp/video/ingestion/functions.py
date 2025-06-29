@@ -1,5 +1,6 @@
 import pixeltable as pxt
 
+
 @pxt.udf
 def extract_text_from_chunk(transcript: pxt.type_system.Json) -> str:
     return f"{transcript['text']}"

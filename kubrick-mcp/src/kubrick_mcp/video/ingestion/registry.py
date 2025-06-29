@@ -35,12 +35,12 @@ def get_registry() -> Dict[str, CachedTableMetadata]:
             ]
             if registry_files:
                 latest_file = max(registry_files)
-                latest_registry = (
-                    Path(cc.DEFAULT_CACHED_TABLES_REGISTRY_DIR) / latest_file
-                )
+                latest_registry = Path(cc.DEFAULT_CACHED_TABLES_REGISTRY_DIR) / latest_file
                 with open(str(latest_registry), "r") as f:
                     VIDEO_INDEXES_REGISTRY = json.load(f)
                     for key, value in VIDEO_INDEXES_REGISTRY.items():
+                        if isinstance(value, str):
+                            value = json.loads(value)
                         VIDEO_INDEXES_REGISTRY[key] = CachedTableMetadata(**value)
                 logger.info(f"Loading registry from {latest_registry}")
         except FileNotFoundError:
@@ -70,17 +70,24 @@ def add_index_to_registry(
 
     """
     global VIDEO_INDEXES_REGISTRY
-    VIDEO_INDEXES_REGISTRY[video_name] = CachedTableMetadata(
+    cached_table_meta = CachedTableMetadata(
+        video_name=video_name,
         video_cache=video_cache,
-        video_table=f"{video_cache}.table",  # FIXME: this is a hack, should be fixed before passed here
+        video_table=f"{video_cache}.table",
         frames_view=frames_view_name,
         audio_chunks_view=audio_view_name,
-    ).model_dump()
+    ).model_dump_json()
+    VIDEO_INDEXES_REGISTRY[video_name] = cached_table_meta
+
     dt = datetime.now()
     dtstr = dt.strftime("%Y-%m-%d%H:%M:%S")
     records_dir = Path(cc.DEFAULT_CACHED_TABLES_REGISTRY_DIR)
     records_dir.mkdir(parents=True, exist_ok=True)
     with open(records_dir / f"registry_{dtstr}.json", "w") as f:
+        for k, v in VIDEO_INDEXES_REGISTRY.items():
+            if isinstance(v, CachedTableMetadata):
+                v = v.model_dump_json()
+            VIDEO_INDEXES_REGISTRY[k] = v
         json.dump(VIDEO_INDEXES_REGISTRY, f, indent=4)
 
     logger.info(f"Video index '{video_name}' registered in the global registry.")
@@ -96,5 +103,7 @@ def get_table(video_name: str) -> Dict[str, CachedTable]:
     registry = get_registry()
     logger.info(f"Registry: {registry}")
     metadata = registry.get(video_name)
+    if isinstance(metadata, str):
+        metadata = json.loads(metadata)
     logger.info(f"Metadata: {metadata}")
     return CachedTable.from_metadata(metadata)

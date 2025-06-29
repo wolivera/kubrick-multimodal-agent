@@ -4,9 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file="kubrick-mcp/.env", extra="ignore", env_file_encoding="utf-8"
-    )
+    model_config = SettingsConfigDict(env_file="kubrick-mcp/.env", extra="ignore", env_file_encoding="utf-8")
 
     # --- OPIK Configuration ---
     OPIK_API_KEY: str
@@ -19,7 +17,7 @@ class Settings(BaseSettings):
     IMAGE_CAPTION_MODEL: str = "gpt-4o-mini"
 
     # --- Video Ingestion Configuration ---
-    SPLIT_FPS: float = 1.0
+    SPLIT_FRAMES_COUNT: int = 60
     AUDIO_CHUNK_LENGTH: int = 10
     AUDIO_OVERLAP_SECONDS: int = 5
 
@@ -32,7 +30,7 @@ class Settings(BaseSettings):
     # --- Caption Similarity Search Configuration ---
     CAPTION_MODEL_PROMPT: str = "Describe what is happening in the image"
     CAPTION_SIMILARITY_EMBD_MODEL: str = "text-embedding-3-small"
-    DELTA_SECONDS_FRAME_INTERVAL: float = 3.0
+    DELTA_SECONDS_FRAME_INTERVAL: float = 5.0
 
     # --- Video Search Engine Configuration ---
     VIDEO_CLIP_SPEECH_SEARCH_TOP_K: int = 1

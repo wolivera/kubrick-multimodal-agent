@@ -1,23 +1,47 @@
 import base64
+import subprocess
 from io import BytesIO
 
+import loguru
 from moviepy import VideoFileClip
 from PIL import Image
 
+logger = loguru.logger.bind(name="VideoTools")
 
-def extract_video_clip(
-    video_path: str, start_time: float, end_time: float, output_path: str = None
-) -> VideoFileClip:
+
+def extract_video_clip(video_path: str, start_time: float, end_time: float, output_path: str = None) -> VideoFileClip:
+    # BUG: MoviePy crashes mid clip trimming. When it's got videos > N+5 minutes. Switching to ffmpeg for reliability.
+
     if start_time >= end_time:
         raise ValueError("start_time must be less than end_time")
 
-    video = VideoFileClip(video_path)
-    clip = video.subclipped(start_time=start_time, end_time=end_time)
+    command = [
+        "ffmpeg",
+        "-ss",
+        str(start_time),  # Seek (start time)
+        "-to",
+        str(end_time),  # End time
+        "-i",
+        video_path,  # Input file (after seek options)
+        "-c:v",
+        "libx264",  # Video codec (split into two arguments)
+        "-preset",
+        "medium",  # Add a preset for better balance of speed/quality
+        "-crf",
+        "23",  # Constant Rate Factor (quality setting, lower is better quality)
+        "-c:a",
+        "copy",  # Audio codec (copy stream without re-encoding)
+        "-y",  # Overwrite output file without asking
+        output_path,  # Output file (must be last)
+    ]
 
-    if output_path:
-        clip.write_videofile(output_path)
-
-    return VideoFileClip(output_path)
+    try:
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+        logger.debug(f"FFmpeg output: {stdout.decode('utf-8', errors='ignore')}")
+        return VideoFileClip(output_path)
+    except subprocess.CalledProcessError as e:
+        raise IOError(f"Failed to extract video clip: {str(e)}")
 
 
 def encode_image(image: str | Image.Image) -> str:
