@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Message from '@/components/Message';
+import BackgroundAnimation from '@/components/BackgroundAnimation';
 import ChatHeader from '@/components/ChatHeader';
 import ChatInput from '@/components/ChatInput';
-import VideoSidebar from '@/components/VideoSidebar';
+import Message from '@/components/Message';
 import TypingIndicator from '@/components/TypingIndicator';
-import BackgroundAnimation from '@/components/BackgroundAnimation';
+import VideoSidebar from '@/components/VideoSidebar';
+import { useEffect, useRef, useState } from 'react';
 
 interface Message {
   id: string;
@@ -90,7 +90,7 @@ const Index = () => {
           }
         }
       });
-    }, 2000); // Poll every 2 seconds
+    }, 7000); // Poll every 2 seconds
 
     return () => clearInterval(pollInterval);
   }, [uploadedVideos]);
