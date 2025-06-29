@@ -152,18 +152,13 @@ async def upload_video(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="No file uploaded")
 
     try:
-        # Ensure shared_media directory exists
         shared_media_dir = Path("shared_media")
         shared_media_dir.mkdir(exist_ok=True)
 
-        # Create a unique filename to avoid conflicts
-        file_extension = Path(file.filename).suffix
-        unique_filename = f"{uuid4()}{file_extension}"
-        video_path = str(shared_media_dir / unique_filename)
-
-        # Save the file
-        with open(video_path, "wb") as f:
-            shutil.copyfileobj(file.file, f)
+        video_path = Path(shared_media_dir / file.filename)
+        if not video_path.exists():
+            with open(video_path, "wb") as f:
+                shutil.copyfileobj(file.file, f)
 
         return VideoUploadResponse(message="Video uploaded successfully", video_path=video_path)
     except Exception as e:
@@ -195,7 +190,7 @@ async def serve_media(file_path: str):
 def run_api(port, host):
     import uvicorn
 
-    uvicorn.run("api:app", host=host, port=port)
+    uvicorn.run("api:app", host=host, port=port, loop="asyncio")
 
 
 if __name__ == "__main__":

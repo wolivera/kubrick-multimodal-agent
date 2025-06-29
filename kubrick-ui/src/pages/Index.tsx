@@ -266,7 +266,7 @@ const Index = () => {
       // Create video object with processing info
       const fileUrl = URL.createObjectURL(file);
       const newVideo: UploadedVideo = {
-        id: Date.now().toString(),
+        id: uploadData.video_path,
         url: fileUrl,
         file,
         timestamp: new Date(),

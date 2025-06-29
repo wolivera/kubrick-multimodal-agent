@@ -4,10 +4,9 @@ from typing import TYPE_CHECKING, Optional
 
 import pixeltable as pxt
 from loguru import logger
-from pixeltable.functions.openai import vision
-from pixeltable.functions.openai import embeddings
 from pixeltable.functions import openai
 from pixeltable.functions.huggingface import clip
+from pixeltable.functions.openai import embeddings, vision
 from pixeltable.functions.video import extract_audio
 from pixeltable.iterators import AudioSplitter
 from pixeltable.iterators.video import FrameIterator
@@ -35,7 +34,7 @@ class VideoProcessor:
 
         logger.info(
             "VideoProcessor initialized",
-            f"\n Split FPS: {settings.SPLIT_FPS}",
+            f"\n Split FPS: {settings.SPLIT_FRAMES_COUNT}",
             f"\n Audio Chunk: {settings.AUDIO_CHUNK_LENGTH} seconds",
         )
 
@@ -43,9 +42,7 @@ class VideoProcessor:
         self._video_mapping_idx = video_name
         exists = self._check_if_exists(video_name)
         if exists:
-            logger.info(
-                f"Video index '{self._video_mapping_idx}' already exists and is ready for use."
-            )
+            logger.info(f"Video index '{self._video_mapping_idx}' already exists and is ready for use.")
             cached_table: "CachedTable" = registry.get_table(self._video_mapping_idx)
             self.pxt_cache = cached_table.video_cache
             self.video_table = cached_table.video_table
@@ -67,9 +64,7 @@ class VideoProcessor:
                 frames_view_name=self.frames_view_name,
                 audio_view_name=self.audio_view_name,
             )
-            logger.info(
-                f"Creating new video index '{self.video_table_name}' in '{self.pxt_cache}'"
-            )
+            logger.info(f"Creating new video index '{self.video_table_name}' in '{self.pxt_cache}'")
 
     def _check_if_exists(self, video_path: str) -> bool:
         """
@@ -123,8 +118,7 @@ class VideoProcessor:
                 audio=self.video_table.audio_extract,
                 chunk_duration_sec=settings.AUDIO_CHUNK_LENGTH,
                 overlap_sec=settings.AUDIO_OVERLAP_SECONDS,
-                min_chunk_duration_sec=settings.AUDIO_CHUNK_LENGTH
-                - settings.AUDIO_OVERLAP_SECONDS,
+                min_chunk_duration_sec=settings.AUDIO_CHUNK_LENGTH - settings.AUDIO_OVERLAP_SECONDS,
             ),
             if_exists="ignore",
         )
@@ -162,9 +156,7 @@ class VideoProcessor:
         self.frames_view = pxt.create_view(
             self.frames_view_name,
             self.video_table,
-            iterator=FrameIterator.create(
-                video=self.video_table.video, fps=settings.SPLIT_FPS
-            ),
+            iterator=FrameIterator.create(video=self.video_table.video, num_frames=settings.SPLIT_FRAMES_COUNT),
             if_exists="ignore",
         )
 
@@ -174,7 +166,6 @@ class VideoProcessor:
             image_embed=clip.using(model_id=settings.IMAGE_SIMILARITY_EMBD_MODEL),
         )
 
-
     def _add_frame_captioning(self):
         self.frames_view.add_computed_column(
             im_caption=vision(
@@ -183,7 +174,6 @@ class VideoProcessor:
                 model=settings.IMAGE_CAPTION_MODEL,
             )
         )
-
 
     def _add_caption_embedding_index(self):
         self.frames_view.add_embedding_index(
@@ -199,9 +189,7 @@ class VideoProcessor:
             video_path (str): The path to the video file.
         """
         if not self.video_table:
-            raise ValueError(
-                "Video table is not initialized. Call setup_table() first."
-            )
+            raise ValueError("Video table is not initialized. Call setup_table() first.")
 
         logger.info(f"Adding video {video_path} to table {self.video_table_name}")
         self.video_table.insert([{"video": video_path}])
