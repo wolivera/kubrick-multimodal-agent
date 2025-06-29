@@ -10,10 +10,14 @@
             "request": "launch",
             "program": "${workspaceFolder}/src/kubrick_mcp/server.py",
             "python": "${command:python.interpreterPath}",
+            "justMyCode": false,
             "args": [
                 "--host", "0.0.0.0",
                 "--port", "9090",
-                "--transport", "streamable-http"]
+                "--transport", "streamable-http"],
+            "env": {
+                "LOGURU_LEVEL": "DEBUG",
+            }
         },
         {
             "name": "[DEBUG]Run API",
