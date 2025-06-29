@@ -1,9 +1,19 @@
 import pixeltable as pxt
+from PIL import Image
 
 
 @pxt.udf
 def extract_text_from_chunk(transcript: pxt.type_system.Json) -> str:
     return f"{transcript['text']}"
+
+
+@pxt.udf
+def resize_image(image: pxt.type_system.Image, width: int, height: int) -> pxt.type_system.Image:
+    if not isinstance(image, Image.Image):
+        raise TypeError("Input must be a PIL Image")
+
+    resized_image = image.thumbnail((width, height))
+    return resized_image
 
 
 @pxt.udf

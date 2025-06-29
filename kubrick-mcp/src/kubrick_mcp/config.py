@@ -13,11 +13,11 @@ class Settings(BaseSettings):
 
     # --- OPENAI Configuration ---
     OPENAI_API_KEY: str
-    AUDIO_TRANSCRIPT_MODEL: str = "gpt-4o-mini-transcribe"
+    AUDIO_TRANSCRIPT_MODEL: str = "base.en"  # Whisper tiny model 37M
     IMAGE_CAPTION_MODEL: str = "gpt-4o-mini"
 
     # --- Video Ingestion Configuration ---
-    SPLIT_FRAMES_COUNT: int = 60
+    SPLIT_FRAMES_COUNT: int = 45
     AUDIO_CHUNK_LENGTH: int = 10
     AUDIO_OVERLAP_SECONDS: int = 5
 
@@ -27,9 +27,13 @@ class Settings(BaseSettings):
     # --- Image Similarity Search Configuration ---
     IMAGE_SIMILARITY_EMBD_MODEL: str = "openai/clip-vit-base-patch32"
 
+    # --- Image Captioning Configuration ---
+    IMAGE_RESIZE_WIDTH: int = 1024
+    IMAGE_RESIZE_HEIGHT: int = 768
+    CAPTION_SIMILARITY_EMBD_MODEL: str = "openai/clip-vit-base-patch32"
+
     # --- Caption Similarity Search Configuration ---
     CAPTION_MODEL_PROMPT: str = "Describe what is happening in the image"
-    CAPTION_SIMILARITY_EMBD_MODEL: str = "text-embedding-3-small"
     DELTA_SECONDS_FRAME_INTERVAL: float = 5.0
 
     # --- Video Search Engine Configuration ---

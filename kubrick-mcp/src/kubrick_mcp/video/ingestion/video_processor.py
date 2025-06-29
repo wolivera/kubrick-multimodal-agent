@@ -13,7 +13,7 @@ from pixeltable.iterators.video import FrameIterator
 
 import kubrick_mcp.video.ingestion.registry as registry
 from kubrick_mcp.config import get_settings
-from kubrick_mcp.video.ingestion.functions import extract_text_from_chunk
+from kubrick_mcp.video.ingestion.functions import extract_text_from_chunk, resize_image
 
 if TYPE_CHECKING:
     from kubrick_mcp.video.ingestion.models import CachedTable
@@ -159,18 +159,26 @@ class VideoProcessor:
             iterator=FrameIterator.create(video=self.video_table.video, num_frames=settings.SPLIT_FRAMES_COUNT),
             if_exists="ignore",
         )
+        self.frames_view.add_computed_column(
+            resized_frame=resize_image(
+                self.frames_view.frame,
+                width=settings.IMAGE_RESIZE_WIDTH,
+                height=settings.IMAGE_RESIZE_HEIGHT,
+            )
+        )
 
     def _add_frame_embedding_index(self):
         self.frames_view.add_embedding_index(
-            column=self.frames_view.frame,
+            column=self.frames_view.resized_frame,
             image_embed=clip.using(model_id=settings.IMAGE_SIMILARITY_EMBD_MODEL),
+            if_exists="replace_force",
         )
 
     def _add_frame_captioning(self):
         self.frames_view.add_computed_column(
             im_caption=vision(
                 prompt=settings.CAPTION_MODEL_PROMPT,
-                image=self.frames_view.frame,
+                image=self.frames_view.resized_frame,
                 model=settings.IMAGE_CAPTION_MODEL,
             )
         )
@@ -178,7 +186,8 @@ class VideoProcessor:
     def _add_caption_embedding_index(self):
         self.frames_view.add_embedding_index(
             column=self.frames_view.im_caption,
-            string_embed=embeddings.using(model=settings.CAPTION_SIMILARITY_EMBD_MODEL),
+            string_embed=clip.using(model_id=settings.CAPTION_SIMILARITY_EMBD_MODEL),
+            if_exists="replace_force",
         )
 
     def add_video(self, video_path: str) -> bool:
