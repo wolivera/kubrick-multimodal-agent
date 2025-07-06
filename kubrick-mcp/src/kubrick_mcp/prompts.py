@@ -55,33 +55,54 @@ to make the conversation more engaging and interesting.
 
 
 def routing_system_prompt() -> str:
+    _prompt_id = "routing-system-prompt"
     try:
-        prompt = opik.Prompt(name="routing-system-prompt", prompt=ROUTING_SYSTEM_PROMPT)
-        logger.info(f"System prompt loaded. \n {prompt.commit=} \n {prompt.prompt=}")
+        prompt = client.get_prompt(_prompt_id)
+        if prompt is None:
+            prompt = client.create_prompt(
+                name=_prompt_id,
+                prompt=ROUTING_SYSTEM_PROMPT,
+            )
+            logger.info(f"System prompt created. \n {prompt.commit=} \n {prompt.prompt=}")
         return prompt.prompt
     except Exception:
-        logger.warning("Nada, not working. Check opik creds playa")
+        logger.warning("Couldn't retrieve prompt from Opik, check credentials! Using hardcoded prompt.")
+        logger.warning(f"Using hardcoded prompt: {ROUTING_SYSTEM_PROMPT}")
         prompt = ROUTING_SYSTEM_PROMPT
     return prompt
 
 
 def tool_use_system_prompt() -> str:
+    _prompt_id = "tool-use-system-prompt"
     try:
-        prompt = opik.Prompt(
-            name="tool-use-system-prompt", prompt=TOOL_USE_SYSTEM_PROMPT
-        )
+        prompt = client.get_prompt(_prompt_id)
+        if prompt is None:
+            prompt = client.create_prompt(
+                name=_prompt_id,
+                prompt=TOOL_USE_SYSTEM_PROMPT,
+            )
+            logger.info(f"System prompt created. \n {prompt.commit=} \n {prompt.prompt=}")
         return prompt.prompt
     except Exception:
-        logger.warning("Nada, not working. Check opik creds playa")
+        logger.warning("Couldn't retrieve prompt from Opik, check credentials! Using hardcoded prompt.")
+        logger.warning(f"Using hardcoded prompt: {TOOL_USE_SYSTEM_PROMPT}")
         prompt = TOOL_USE_SYSTEM_PROMPT
     return prompt
 
 
 def general_system_prompt() -> str:
+    _prompt_id = "general-system-prompt"
     try:
-        prompt = opik.Prompt(name="general-system-prompt", prompt=GENERAL_SYSTEM_PROMPT)
+        prompt = client.get_prompt(_prompt_id)
+        if prompt is None:
+            prompt = client.create_prompt(
+                name=_prompt_id,
+                prompt=GENERAL_SYSTEM_PROMPT,
+            )
+            logger.info(f"System prompt created. \n {prompt.commit=} \n {prompt.prompt=}")
         return prompt.prompt
     except Exception:
-        logger.warning("Nada, not working. Check opik creds playa")
+        logger.warning("Couldn't retrieve prompt from Opik, check credentials! Using hardcoded prompt.")
+        logger.warning(f"Using hardcoded prompt: {GENERAL_SYSTEM_PROMPT}")
         prompt = GENERAL_SYSTEM_PROMPT
     return prompt
