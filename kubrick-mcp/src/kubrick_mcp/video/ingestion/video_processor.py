@@ -14,6 +14,7 @@ from pixeltable.iterators.video import FrameIterator
 import kubrick_mcp.video.ingestion.registry as registry
 from kubrick_mcp.config import get_settings
 from kubrick_mcp.video.ingestion.functions import extract_text_from_chunk, resize_image
+from kubrick_mcp.video.ingestion.tools import re_encode_video
 
 if TYPE_CHECKING:
     from kubrick_mcp.video.ingestion.models import CachedTable
@@ -199,8 +200,9 @@ class VideoProcessor:
         """
         if not self.video_table:
             raise ValueError("Video table is not initialized. Call setup_table() first.")
-
         logger.info(f"Adding video {video_path} to table {self.video_table_name}")
-        self.video_table.insert([{"video": video_path}])
 
+        new_video_path = re_encode_video(video_path=video_path)
+        if new_video_path:
+            self.video_table.insert([{"video": video_path}])
         return True

@@ -1,7 +1,9 @@
 import base64
 import subprocess
 from io import BytesIO
+from pathlib import Path
 
+import av
 import loguru
 from moviepy import VideoFileClip
 from PIL import Image
@@ -98,3 +100,43 @@ def decode_image(base64_string: str) -> Image.Image:
 
     except (ValueError, IOError) as e:
         raise IOError(f"Failed to decode image: {str(e)}")
+
+
+def re_encode_video(video_path: str) -> str:
+    if not Path(video_path).exists():
+        logger.error(f"Error: Video file not found at {video_path}")
+        return False
+
+    try:
+        with av.open(video_path) as container:
+            logger.info(f"Video {video_path} successfully opened by PyAV.")
+            return video_path
+    except Exception as e:
+        logger.error(f"An unexpected error occurred while trying to open video {video_path}: {e}")
+    finally:
+        o_dir, o_fname = Path(video_path).parent, Path(video_path).name
+        reencoded_filename = f"re_{o_fname}.mp4"
+        reencoded_video_path = Path(o_dir) / reencoded_filename
+
+        command = ["ffmpeg", "-i", video_path, "-c:v", "libx264", "-c:a", "copy", reencoded_video_path]
+
+        logger.info(f"Attempting to re-encode video using FFmpeg: {' '.join(command)}")
+
+        try:
+            result = subprocess.run(command, capture_output=True, text=True, check=True)
+            logger.info(f"FFmpeg re-encoding successful for {video_path} to {reencoded_video_path}")
+            logger.debug(f"FFmpeg stdout: {result.stdout}")
+            logger.debug(f"FFmpeg stderr: {result.stderr}")
+
+            try:
+                with av.open(reencoded_video_path) as container:
+                    logger.info(f"Re-encoded video {reencoded_video_path} successfully opened by PyAV.")
+                    return reencoded_video_path
+            except Exception as e:
+                logger.error(
+                    f"An unexpected error occurred while trying to open re-encoded video {reencoded_video_path}: {e}"
+                )
+                return None
+        except Exception as e:
+            logger.error(f"An unexpected error occurred during FFmpeg re-encoding: {e}")
+            return None
