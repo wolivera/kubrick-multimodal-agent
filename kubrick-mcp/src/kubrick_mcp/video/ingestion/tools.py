@@ -17,29 +17,35 @@ def extract_video_clip(video_path: str, start_time: float, end_time: float, outp
     if start_time >= end_time:
         raise ValueError("start_time must be less than end_time")
 
+    ## Anatomy of FFMPEG command
+    # -i = input file 
+    # -ss/-to = start and end time of the clip, formatted as seconds or hh:mm:ss
+    # -c (:v, :a) = sets the codec for the audio, and video channels
+    # -preset = encoding speed/quality split
+    # last argument is the output video path (if using libx264, it must end with .mp4)
     command = [
         "ffmpeg",
         "-ss",
-        str(start_time),  # Seek (start time)
+        str(start_time),
         "-to",
-        str(end_time),  # End time
+        str(end_time),  
         "-i",
-        video_path,  # Input file (after seek options)
+        video_path,
         "-c:v",
-        "libx264",  # Video codec (split into two arguments)
+        "libx264", 
         "-preset",
-        "medium",  # Add a preset for better balance of speed/quality
+        "medium",  
         "-crf",
-        "23",  # Constant Rate Factor (quality setting, lower is better quality)
+        "23",  
         "-c:a",
-        "copy",  # Audio codec (copy stream without re-encoding)
-        "-y",  # Overwrite output file without asking
-        output_path,  # Output file (must be last)
+        "copy",
+        "-y", 
+        output_path,
     ]
 
     try:
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate()
+        stdout, _ = process.communicate()
         logger.debug(f"FFmpeg output: {stdout.decode('utf-8', errors='ignore')}")
         return VideoFileClip(output_path)
     except subprocess.CalledProcessError as e:

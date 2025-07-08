@@ -64,6 +64,9 @@ class CachedTable:
             "audio_chunks_view": str(self.audio_chunks_view),
         }
 
+    def describe(self) -> str:
+        """Returns a string describing the video table."""
+        return f"Video index '{self.video_name}' info: {', '.join(self.video_table.columns)}"
 
 ######################################
 # Image Processing Models

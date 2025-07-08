@@ -1,8 +1,9 @@
+from typing import Dict
 from kubrick_mcp.video.ingestion.models import CachedTable, CachedTableMetadata
 from kubrick_mcp.video.ingestion.registry import get_registry
 
 
-def list_tables() -> str:
+def list_tables() -> Dict[str, str]:
     """List all video indexes currently available.
 
     Returns:
@@ -10,11 +11,16 @@ def list_tables() -> str:
     """
     keys = list(get_registry().keys())
     if not keys:
-        return "No video indexes exist."
-    return f"Current video indexes: {', '.join(keys)}"
+        return None
+    
+    response = {
+        "message": "Current processed videos",
+        "indexes": keys,
+    }
+    return response
 
 
-def list_table_info(table_name: str) -> str:
+def table_info(table_name: str) -> str:
     """List information about a specific video index.
 
     Args:
@@ -29,4 +35,5 @@ def list_table_info(table_name: str) -> str:
     table_metadata = registry[table_name]
     table_info = CachedTableMetadata(**table_metadata)
     table = CachedTable.from_metadata(table_info)
-    return f"Video index '{table_name}' info: {' | '.join(table.video_table.columns)}"
+    response = table.describe()
+    return response
