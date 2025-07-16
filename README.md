@@ -156,8 +156,8 @@ To get the most out of this course, we recommend:
         </p>
       </td>
       <td align="center">
-        <a href="https://github.com/Joywalker">
-          <img src="https://github.com/Joywalker.png" width="100px;" alt="Alex Razvant"/><br />
+        <a href="https://github.com/arazvant">
+          <img src="https://github.com/arazvant.png" width="100px;" alt="Alex Razvant"/><br />
           <sub><b>Alex Razvant</b></sub>
         </a><br />
         <sub>AI / ML Engineer</sub>
