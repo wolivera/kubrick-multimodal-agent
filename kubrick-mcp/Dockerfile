@@ -3,7 +3,8 @@ FROM python:3.12-slim
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Install FFmpeg
+# Note:
+# ffmpeg should be installed at system level, such that av (pyav) can decode videos, sample frames and process images.
 RUN apt-get update && \
     apt-get install -y ffmpeg && \
     apt-get clean && \
