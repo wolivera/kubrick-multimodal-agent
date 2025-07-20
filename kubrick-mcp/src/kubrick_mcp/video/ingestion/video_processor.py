@@ -70,12 +70,8 @@ class VideoProcessor:
     def _check_if_exists(self, video_path: str) -> bool:
         """
         Checks if the PixelTable table and related views/index for the video index exist.
-
-        Args:
-            video_path (str): The path to the video file.
-
         Returns:
-            bool: True if all components exist, False otherwise.
+            bool: True if current video index exists, False otherwise.
         """
         existing_tables = registry.get_registry()
         return video_path in existing_tables

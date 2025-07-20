@@ -18,7 +18,7 @@ def extract_video_clip(video_path: str, start_time: float, end_time: float, outp
         raise ValueError("start_time must be less than end_time")
 
     ## Anatomy of FFMPEG command
-    # -i = input file 
+    # -i = input file
     # -ss/-to = start and end time of the clip, formatted as seconds or hh:mm:ss
     # -c (:v, :a) = sets the codec for the audio, and video channels
     # -preset = encoding speed/quality split
@@ -28,18 +28,18 @@ def extract_video_clip(video_path: str, start_time: float, end_time: float, outp
         "-ss",
         str(start_time),
         "-to",
-        str(end_time),  
+        str(end_time),
         "-i",
         video_path,
         "-c:v",
-        "libx264", 
+        "libx264",
         "-preset",
-        "medium",  
+        "medium",
         "-crf",
-        "23",  
+        "23",
         "-c:a",
         "copy",
-        "-y", 
+        "-y",
         output_path,
     ]
 
