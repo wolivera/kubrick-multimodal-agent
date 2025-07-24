@@ -148,18 +148,19 @@ class GroqAgent(BaseAgent):
             GeneralResponseModel if tool_call.function.name == "ask_question_about_video" else VideoClipResponseModel
         )
 
-        # TODO: Prompt need to be improved, tool-calling history + general response confuse the LLM
-        tmp_chat = [
-            {
-                "role": "system",
-                "content": "Your name is Kubrick, an AI assistant. You are helpful, creative, and friendly. The context you have contains informations about what's happening in a video, you will answer the user's question in a detailed manner.",
-            },
-            {"role": "user", "content": message},
-            {"role": "assistant", "content": function_response},
-        ]
+        # # TODO: Prompt need to be improved, tool-calling history + general response confuse the LLM
+        # tmp_chat = [
+        #     {
+        #         "role": "system",
+        #         "content": "Your name is Kubrick, an AI assistant. You are helpful, creative, and friendly. The context you have contains informations about what's happening in a video, you will answer the user's question in a detailed manner.",
+        #     },
+        #     {"role": "user", "content": message},
+        #     {"role": "assistant", "content": function_response},
+        # ]
+
         followup_response = self.instructor_client.chat.completions.create(
             model=settings.GROQ_GENERAL_MODEL,
-            messages=tmp_chat,
+            messages=chat_history,
             response_model=response_model,
         )
 
