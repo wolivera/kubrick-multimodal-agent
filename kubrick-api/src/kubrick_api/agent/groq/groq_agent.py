@@ -7,8 +7,9 @@ import instructor
 import opik
 from groq import Groq
 from loguru import logger
-from opik import opik_context
+from opik import Attachment, opik_context
 
+from kubrick_api import tools
 from kubrick_api.agent.base_agent import BaseAgent
 from kubrick_api.agent.groq.groq_tool import transform_tool_definition
 from kubrick_api.agent.memory import Memory, MemoryRecord
@@ -161,6 +162,18 @@ class GroqAgent(BaseAgent):
             messages=tmp_chat,
             response_model=response_model,
         )
+
+        if isinstance(followup_response, VideoClipResponseModel):
+            logger.info(f"Tracing image from trimmed clip: {followup_response.video_path}")
+            first_image_path = tools.sample_first_frame(followup_response.video_path)
+            opik_context.update_current_trace(
+                attachments=[
+                    Attachment(
+                        data=first_image_path,
+                        content_type="image/png",
+                    )
+                ]
+            )
 
         return followup_response
 
