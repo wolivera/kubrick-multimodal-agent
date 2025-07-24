@@ -165,16 +165,19 @@ class GroqAgent(BaseAgent):
         )
 
         if isinstance(followup_response, VideoClipResponseModel):
-            logger.info(f"Tracing image from trimmed clip: {followup_response.video_path}")
-            first_image_path = tools.sample_first_frame(followup_response.video_path)
-            opik_context.update_current_trace(
-                attachments=[
-                    Attachment(
-                        data=first_image_path,
-                        content_type="image/png",
-                    )
-                ]
-            )
+            try:
+                logger.info(f"Tracing image from trimmed clip: {followup_response.video_path}")
+                first_image_path = tools.sample_first_frame(followup_response.video_path)
+                opik_context.update_current_trace(
+                    attachments=[
+                        Attachment(
+                            data=first_image_path,
+                            content_type="image/png",
+                        )
+                    ]
+                )
+            except ValueError as e:
+                logger.error(f"Failed to sample first frame from video: {e}")
 
         return followup_response
 
