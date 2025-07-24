@@ -109,14 +109,20 @@ def decode_image(base64_string: str) -> Image.Image:
 
 
 def re_encode_video(video_path: str) -> str:
+    """
+    Re-encode a video file to ensure compatibility with PyAV.
+
+    Note: In case a video was downloaded from the web, it may not be compatible with PyAV.
+    This function attempts to re-encode the video using FFmpeg and returns the path to the re-encoded video.
+    """
     if not Path(video_path).exists():
         logger.error(f"Error: Video file not found at {video_path}")
         return False
 
     try:
-        with av.open(video_path) as container:
+        with av.open(video_path) as _:
             logger.info(f"Video {video_path} successfully opened by PyAV.")
-            return video_path
+            return str(video_path)
     except Exception as e:
         logger.error(f"An unexpected error occurred while trying to open video {video_path}: {e}")
     finally:
@@ -135,9 +141,9 @@ def re_encode_video(video_path: str) -> str:
             logger.debug(f"FFmpeg stderr: {result.stderr}")
 
             try:
-                with av.open(reencoded_video_path) as container:
+                with av.open(reencoded_video_path) as _:
                     logger.info(f"Re-encoded video {reencoded_video_path} successfully opened by PyAV.")
-                    return reencoded_video_path
+                    return str(reencoded_video_path)
             except Exception as e:
                 logger.error(
                     f"An unexpected error occurred while trying to open re-encoded video {reencoded_video_path}: {e}"
