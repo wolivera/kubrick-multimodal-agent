@@ -182,7 +182,7 @@ To get the most out of this course, we recommend:
         <sub>AI / ML Engineer</sub>
         <p>
         </br>
-          <a href="https://www.linkedin.com//arazvant" target="_blank">
+          <a href="https://www.linkedin.com/in/arazvant" target="_blank">
             <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
           </a>
         </p>
