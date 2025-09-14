@@ -25,7 +25,7 @@ That's why we built **Kubrick AI**, an MCP Multimodal Agent for video processing
 
 > 💡 Agents + Video Processing ... and MCP! 
 
-This course, is a collaboration between The Neural Maze and Neural Bits (from now on, "The Neural Bros"), and it's built for developers who want to go beyond the basics and build serious, production-ready AI Systems. In particular, you'll:
+This course is a collaboration between The Neural Maze and Neural Bits (from now on, "The Neural Bros"), and it's built for developers who want to go beyond the basics and build serious, production-ready AI Systems. In particular, you'll:
 
 * Learn how to build an MCP server for video processing using Pixeltable and FastMCP
 
@@ -37,7 +37,7 @@ This course, is a collaboration between The Neural Maze and Neural Bits (from no
 ## 🖊️ What you'll learn
 * Learn how to use Pixeltable for multimodal data processing and stateful agents
 
-* Create complex MCP servers using FastMCP: expose resources, prompts and tools
+* Create complex MCP servers using FastMCP: expose resources, prompts, and tools
 
 * Apply prompt versioning to your MCP server (instead of defining the prompts in the Agent API)
 
@@ -55,20 +55,19 @@ This course, is a collaboration between The Neural Maze and Neural Bits (from no
 
 ## 💻 What You'll Do:
 
-Completing this course, you'll learn how to design and enable Agents to understand multimodal data, across images, video, audio and text inputs all within a single system. 
+Completing this course, you'll learn how to design and enable Agents to understand multimodal data, across images, video, audio, and text inputs, all within a single system. 
 
 Specifically, you'll get to:
 
 - Build a complex Multimodal Processing Pipeline
 - Build a Video Search Engine and expose its functionality to an Agent via MCP (Model Context Protocol)
-- Build a production ready API to power the Agent.
+- Build a production-ready API to power the Agent.
 - Integrate LLMOps principles and best software engineering practices.
-- Learn about video, embeddings, streaming APIs, Vision Language Models (VLMs) and more.
+- Learn about video, embeddings, streaming APIs, Vision Language Models (VLMs), and more.
 
-After completing this course, you'll have built your own Kubrick Agent with a HAL themed spin-off, to play the role of a new set of eyes and ears:
+After completing this course, you'll have built your own Kubrick Agent with a HAL-themed spin-off, to play the role of a new set of eyes and ears:
 
-<video src="https://github.com/user-attachments/assets/ef77c2a9-1a77-4f14-b2dd-e759c3f6db72"/></video>
-
+[![Youtube Video]()](https://www.youtube.com/watch?v=_iYB1z1_Xgs&t=316s)
 
 ---
 
@@ -93,7 +92,7 @@ We have detailed the steps to get you started, in this [GETTING_STARTED.md](GETT
 
 ## 🧑‍🎓 Who is this course for?
 You'll get the most of this course by building it yourself, from the ground up. 
-The course components are structured to cover key concepts, and showcase how to build on top of them, towards AI Systems.
+The course components are structured to cover key concepts and showcase how to build on top of them, towards AI Systems.
 
 | Target Audience |	Skills you'll get |
 | ----- | ------------------|
@@ -122,10 +121,10 @@ You'll be able to run Kubrick examples while staying at 0 cost. That's because w
 | Provider | Free Credits |
 | -------- |  ----------- |
 | OpenAI   |  $5 on first sign-up |
-| Groq | 500,000 tokens / day
+| Groq | 500,000 tokens/day
 
 > [!NOTE]  
-> In this setup, for running the Kubrick Agent example - the freemium plans are enough.
+> In this setup, for running the Kubrick Agent example, the freemium plans are enough.
 
 
 ## 📚 Course Syllabus
@@ -142,11 +141,11 @@ To get the most out of this course, we recommend:
 
 | Module No. | In-depth Lesson (Link) | Lesson Summary (3min) | Description | Code |
 | - | -------------- | ------------ | -------- | ----------- |
-| 0 | <a href="https://multimodalai.substack.com/p/introducing-kubrick-course-a-multimodal"><img src="static/kubrick_ai_diagram.png" width=550></a> | [Get a Summary](https://theneuralmaze.substack.com/p/your-first-video-agent-multimodality) | Course introduction and overview. Outlining the basic components  | N/A 
-| 1 | <a href="https://multimodalai.substack.com/p/cracking-the-code-of-multimodal-ai"><img src="kubrick-mcp/static/m2_mm_data_pipelines.png" width=550></a> | [Get a Summary](https://theneuralmaze.substack.com/p/the-future-of-video-search-is-here) | Diving into the core components of the multimodal processing pipeline, covering video, images, text, and audio data. | [kubrick-mcp](kubrick-mcp)
-| 2 | <a href="https://multimodalai.substack.com/p/building-mcp-servers-for-video-search"><img src="kubrick-mcp/static/m2_mcp_servers_for_mm.png" width=550></a> | [Get a Summary](https://theneuralmaze.substack.com/p/how-real-ai-engineers-build-mcp-servers)| Building the Kubrick MCP Server with FastMCP. Covering MCP protocol (transport, communication), capabilities, tools, resources, and prompts. Adding Opik Integration and MCP Inspector for efficient debugging and local testing. | [kubrick-mcp](kubrick-mcp)
-| 3 | <a href="https://multimodalai.substack.com/p/building-tool-use-mcp-agents-from"><img src="kubrick-api/static/m3_tooluse_agents.png" width=550></a> | [Get a Summary](https://theneuralmaze.substack.com/p/how-we-built-an-mcp-agent-from-scratch) | Building the Kubrick MCP Agent from scratch. Memory layer implementation with Pixeltable and MCP Client with FastMCP. Understanding how to translate MCP Tools into specific provider tools (Groq) | [kubrick-api](kubrick-api)
-| 4 | <a href="https://multimodalai.substack.com/p/building-a-fullstack-befe-agent-ui"><img src="kubrick-api/static/m4_building_agent_api.png" width=550></a> | [Get a Summary](https://theneuralmaze.substack.com/p/if-you-cant-trace-it-monitor-it-or) | Building the Groq Agent, covering the React UI - FastAPI API communication and adding LLMOps observability and conversation tracing with Opik (by Comet) | [kubrick-api](kubrick-api)
+| 0 | <a href="https://multimodalai.substack.com/p/introducing-kubrick-course-a-multimodal"><img src="static/kubrick_ai_diagram.png" width=400></a> | [Get a Summary](https://theneuralmaze.substack.com/p/your-first-video-agent-multimodality) | Course introduction and overview. Outlining the basic components  | N/A 
+| 1 | <a href="https://multimodalai.substack.com/p/cracking-the-code-of-multimodal-ai"><img src="kubrick-mcp/static/m2_mm_data_pipelines.png" width=400></a> | [Get a Summary](https://theneuralmaze.substack.com/p/the-future-of-video-search-is-here) | Diving into the core components of the multimodal processing pipeline, covering video, images, text, and audio data. | [kubrick-mcp](kubrick-mcp)
+| 2 | <a href="https://multimodalai.substack.com/p/building-mcp-servers-for-video-search"><img src="kubrick-mcp/static/m2_mcp_servers_for_mm.png" width=400></a> | [Get a Summary](https://theneuralmaze.substack.com/p/how-real-ai-engineers-build-mcp-servers)| Building the Kubrick MCP Server with FastMCP. Covering MCP protocol (transport, communication), capabilities, tools, resources, and prompts. Adding Opik Integration and MCP Inspector for efficient debugging and local testing. | [kubrick-mcp](kubrick-mcp)
+| 3 | <a href="https://multimodalai.substack.com/p/building-tool-use-mcp-agents-from"><img src="kubrick-api/static/m3_tooluse_agents.png" width=400></a> | [Get a Summary](https://theneuralmaze.substack.com/p/how-we-built-an-mcp-agent-from-scratch) | Building the Kubrick MCP Agent from scratch. Memory layer implementation with Pixeltable and MCP Client with FastMCP. Understanding how to translate MCP Tools into specific provider tools (Groq) | [kubrick-api](kubrick-api)
+| 4 | <a href="https://multimodalai.substack.com/p/building-a-fullstack-befe-agent-ui"><img src="kubrick-api/static/m4_building_agent_api.png" width=400></a> | [Get a Summary](https://theneuralmaze.substack.com/p/if-you-cant-trace-it-monitor-it-or) | Building the Groq Agent, covering the React UI - FastAPI API communication and adding LLMOps observability and conversation tracing with Opik (by Comet) | [kubrick-api](kubrick-api)
 | 5 | <a href="https://multimodalai.substack.com/p/kubrick-course-final-round-up"><img src="kubrick-api/static/agent_architecture.gif" width=550></a> | [Get a Summary](https://theneuralmaze.substack.com/p/the-ai-engineering-course-i-wish) | Complete Round-up of the free, open-source Kubrick Course. | N/A
 
 
@@ -193,9 +192,4 @@ To get the most out of this course, we recommend:
 </div>
 
 ---
-
-| Publication | Description | Subscribe |
-|:---:|---|:---:|
-| <a href="https://neuralbits.substack.com/" aria-label="Neural Bits"><img src="https://avatars.githubusercontent.com/u/114508542?s=400&u=abae5b0d28f288fc12502b170167a2ccce133f31&v=4" alt="Neural Bits Logo" width="100"/><br/><p align="center">**Neural Bits**</a></p>| Learn about industry standards and production-ready AI Engineering. | <a href="https://neuralbits.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
-| <a href="https://theneuralmaze.substack.com/" aria-label="The Neural Maze"><img src="https://avatars.githubusercontent.com/u/151655127?s=400&u=2fff53e8c195ac155e5c8ee65c6ba683a72e655f&v=4" alt="The Neural Maze Logo" width="100"/><br/><p align="center">**The Neural Maze**</a> </a> | Learn to build AI Systems that actually work, from principles to production. Delivered every Wednesday. | <a href="https://theneuralmaze.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
 
