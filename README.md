@@ -67,6 +67,8 @@ Specifically, you'll get to:
 
 After completing this course, you'll have built your own Kubrick Agent with a HAL-themed spin-off, to play the role of a new set of eyes and ears:
 
+<video src="https://github.com/user-attachments/assets/ef77c2a9-1a77-4f14-b2dd-e759c3f6db72"/></video>
+
 ---
 
 ## Getting Started
@@ -77,13 +79,6 @@ We have detailed the steps to get you started, in this [GETTING_STARTED.md](GETT
 
 > 💡 Having Kubrick running is just the first step! Now that you have it up and running, it's time to actually understand how it works (see [Course Syllabus](#-course-syllabus)).
 
-
----
-
-| Publication | Description | Subscribe |
-|:---:|---|:---:|
-| <a href="https://neuralbits.substack.com/" aria-label="Neural Bits"><img src="https://avatars.githubusercontent.com/u/114508542?s=400&u=abae5b0d28f288fc12502b170167a2ccce133f31&v=4" alt="Neural Bits Logo" width="100"/><br/><p align="center">**Neural Bits**</a></p> | Learn about industry standards and production-ready AI Engineering. | <a href="https://neuralbits.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
-| <a href="https://theneuralmaze.substack.com/" aria-label="The Neural Maze"><img src="https://avatars.githubusercontent.com/u/151655127?s=400&u=2fff53e8c195ac155e5c8ee65c6ba683a72e655f&v=4" alt="The Neural Maze Logo" width="100"/><br/><p align="center">**The Neural Maze**</a> </a> | Learn to build AI Systems that actually work, from principles to production. Delivered every Wednesday. | <a href="https://theneuralmaze.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
 
 ---
 ## Watch the Full Video Course
@@ -158,6 +153,8 @@ To get the most out of this course, we recommend:
 | <a href="https://www.pixeltable.com/" target="_blank"><img src="static/sponsors/pixeltable.png" width="300" alt="Pixeltable"></a> | <a href="https://github.com/comet-ml/opik" target="_blank"> <img src="static/sponsors/opik.png" width="300" alt="Opik"></a>|
 | <p align="center">**Pixeltable** </br> is the only Python framework that provides incremental storage, transformation, indexing, and orchestration of your multimodal data.</p> | <p align="center">**Opik** </br>LLM Evaluation platform helps you build, evaluate, and optimize LLM systems that run better, faster, and cheaper</p> 
 
+---
+
 ## Contributors
 ---
 
@@ -193,6 +190,11 @@ To get the most out of this course, we recommend:
     </tr>
   </table>
 </div>
+
+| Publication | Description | Subscribe |
+|:---:|---|:---:|
+| <a href="https://neuralbits.substack.com/" aria-label="Neural Bits"><img src="https://avatars.githubusercontent.com/u/114508542?s=400&u=abae5b0d28f288fc12502b170167a2ccce133f31&v=4" alt="Neural Bits Logo" width="100"/><br/><p align="center">**Neural Bits**</a></p> | Learn about industry standards and production-ready AI Engineering. | <a href="https://neuralbits.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
+| <a href="https://theneuralmaze.substack.com/" aria-label="The Neural Maze"><img src="https://avatars.githubusercontent.com/u/151655127?s=400&u=2fff53e8c195ac155e5c8ee65c6ba683a72e655f&v=4" alt="The Neural Maze Logo" width="100"/><br/><p align="center">**The Neural Maze**</a> </a> | Learn to build AI Systems that actually work, from principles to production. Delivered every Wednesday. | <a href="https://theneuralmaze.substack.com/"><img src="https://img.shields.io/static/v1?label&logo=substack&message=Subscribe%20Now&style=for-the-badge&color=black&scale=2" alt="Subscribe Now" height="30"></a> |
 
 ---
 
