@@ -11,36 +11,6 @@ from kubrick_mcp.tools import (
 )
 
 
-def add_mcp_tools(mcp: FastMCP):
-    mcp.add_tool(
-        name="process_video",
-        description="Process a video file and prepare it for searching.",
-        fn=process_video,
-        tags={"video", "process"},
-    )
-
-    mcp.add_tool(
-        name="get_video_clip_from_user_query",
-        description="Use this tool to get a video clip from a video file based on a user query or question.",
-        fn=get_video_clip_from_user_query,
-        tags={"video", "clip", "query", "question"},
-    )
-
-    mcp.add_tool(
-        name="get_video_clip_from_image",
-        description="Use this tool to get a video clip from a video file based on a user image.",
-        fn=get_video_clip_from_image,
-        tags={"video", "clip", "image"},
-    )
-
-    mcp.add_tool(
-        name="ask_question_about_video",
-        description="Use this tool to get an answer to a question about the video.",
-        fn=ask_question_about_video,
-        tags={"ask", "question", "information"},
-    )
-
-
 def add_mcp_resources(mcp: FastMCP):
     mcp.add_resource_fn(
         fn=list_tables,
@@ -52,32 +22,37 @@ def add_mcp_resources(mcp: FastMCP):
 
 
 def add_mcp_prompts(mcp: FastMCP):
-    mcp.add_prompt(
-        fn=routing_system_prompt,
+    @mcp.prompt(
         name="routing_system_prompt",
         description="Latest version of the routing prompt from Opik.",
-        tags={"prompt", "routing"},
     )
+    def routing_prompt() -> str:
+        return routing_system_prompt()
 
-    mcp.add_prompt(
-        fn=tool_use_system_prompt,
+    @mcp.prompt(
         name="tool_use_system_prompt",
         description="Latest version of the tool use prompt from Opik.",
-        tags={"prompt", "tool_use"},
     )
+    def tool_use_prompt() -> str:
+        return tool_use_system_prompt()
 
-    mcp.add_prompt(
-        fn=general_system_prompt,
+    @mcp.prompt(
         name="general_system_prompt",
         description="Latest version of the general prompt from Opik.",
-        tags={"prompt", "general"},
     )
+    def general_prompt() -> str:
+        return general_system_prompt()
 
 
 mcp = FastMCP("VideoProcessor")
 
+# Register tools using decorator pattern
+mcp.tool(process_video)
+mcp.tool(get_video_clip_from_user_query)
+mcp.tool(get_video_clip_from_image)
+mcp.tool(ask_question_about_video)
+
 add_mcp_prompts(mcp)
-add_mcp_tools(mcp)
 add_mcp_resources(mcp)
 
 

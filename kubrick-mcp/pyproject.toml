@@ -31,3 +31,9 @@ packages = ["src/kubrick_mcp"]
 
 [tool.ruff]
 target-version = "py312"
+
+[tool.uv]
+constraint-dependencies = [
+    "torch>=2.0.0,<2.3.0",
+    "numpy>=1.21.0,<2.0.0"
+]

@@ -5,8 +5,9 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Note:
 # ffmpeg should be installed at system level, such that av (pyav) can decode videos, sample frames and process images.
+# build-essential is required for packages like madoka that need C++ compilation
 RUN apt-get update && \
-    apt-get install -y ffmpeg && \
+    apt-get install -y ffmpeg build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

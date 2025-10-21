@@ -13,5 +13,5 @@
         "notebook.source.organizeImports": true
     },
     "python.defaultInterpreterPath": "kubrick-api/.venv/bin/python",
-    "python.languageServer": "Pylance"
+    "python.languageServer": "None"
 }
